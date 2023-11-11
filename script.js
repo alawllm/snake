@@ -26,21 +26,41 @@ let headYChange = 0;
 let refreshSpeed = 5;
 
 //initial direction
-let direction = "right";
+let direction;
+
+let appleX = 5;
+let appleY = 5;
+
+//store position of the snake
+//snakePositions[0].x, snakePositions[0].y
+let snakePositions = [{ x: headX, y: headY }];
+let snakeLength = 1;
 
 function drawGame() {
   clearScreen();
   drawSnake();
+  drawApple();
   setTimeout(drawGame, 1000 / refreshSpeed);
 }
 
 function drawSnake() {
-  ctx.fillStyle = "orange";
+  ctx.fillStyle = "green";
+
+  //array of fields - actualized when the snake is moving
+  //make the snake grow with every move
+  snakePositions.unshift({ x: headX, y: headY });
+
+  for (let i = 0; i < snakePositions.length; i++) {
+    ctx.fillRect(
+      snakePositions[i].x * tileCount,
+      snakePositions[i].y * tileCount,
+      tileSize,
+      tileSize
+    );
+  }
 
   headX += headXChange;
   headY += headYChange;
-  //args: x,y,width,height
-  ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
 }
 
 function clearScreen() {
@@ -48,23 +68,32 @@ function clearScreen() {
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
+function drawApple() {
+  ctx.fillStyle = "red";
+  ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
+}
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowUp" && direction !== "down") {
     headYChange = -1;
     headXChange = 0;
     direction = "up";
+    snakeLength++;
   } else if (event.key === "ArrowDown" && direction !== "up") {
     headYChange = 1;
     headXChange = 0;
     direction = "down";
+    snakeLength++;
   } else if (event.key === "ArrowLeft" && direction !== "right") {
     headXChange = -1;
     headYChange = 0;
     direction = "left";
+    snakeLength++;
   } else if (event.key === "ArrowRight" && direction !== "left") {
     headXChange = 1;
     headYChange = 0;
     direction = "right";
+    snakeLength++;
   }
 });
 
