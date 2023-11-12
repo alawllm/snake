@@ -1,0 +1,11 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "This is a basic snake game, coded out of nostalgia for playing it on Nokia 3310. And in order to try out canvas in html.",
+  "main": "snakeGame.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ala",
+  "license": "ISC"
+}

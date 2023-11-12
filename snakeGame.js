@@ -3,26 +3,13 @@ const ctx = canvas.getContext("2d");
 
 const scoreContainer = document.getElementById("score-container");
 
-//1. set canvas context, define the logic of the game
-//2. set up the snake - initial position on the canvas
-//3. handle user input - pressing arrow buttons on the keyboard
-//4. implement a game loop - continuously update the game and redraw the canvas
-//5. add apple and collision logic
-//7. update snake position
-//8. handle eating and growing
-//9. add scoring and game over conditions
-
 //settings of the canvas
 let tileCount = 20;
-let tileSize = 18;
+let tileSize = 16;
 
 //starting position of the snake
 let headX = 10;
 let headY = 10;
-
-//assign changed position according to arrows pressed
-let headXChange = 0;
-let headYChange = 0;
 
 let direction;
 let nextDirection;
@@ -35,13 +22,24 @@ let score = 0;
 let snakePositions = [];
 let snakeLength = 1;
 
+const headChange = {
+  up: { x: 0, y: -1 },
+  down: { x: 0, y: 1 },
+  left: { x: -1, y: 0 },
+  right: { x: 1, y: 0 },
+};
+
 function drawGame() {
   renderGameScreen();
+  handleInput();
+  //is there a collision - snakeWithBoard, snakeWithSnake;
+  //renderSnake - arg isThereACollision
+
   renderSnake();
   drawApple();
   checkAppleCollision();
   direction = nextDirection;
-  if (!checkSnakeBoardCollision()) {
+  if (!checkSnakeWithBoardCollision()) {
     setTimeout(drawGame, 1000 / (score / 2 + 3));
   } else {
     drawGameOver();
@@ -49,12 +47,14 @@ function drawGame() {
 }
 
 function renderSnake() {
-  //add new head position
-  snakePositions.unshift({ x: headX, y: headY });
-
+  addNewHeadPosition();
   drawSnake();
   updateHeadPosition();
   shortenSnake();
+}
+
+function addNewHeadPosition() {
+  snakePositions.unshift({ x: headX, y: headY });
 }
 
 function drawSnake() {
@@ -71,8 +71,10 @@ function drawSnake() {
 }
 
 function updateHeadPosition() {
-  headX += headXChange;
-  headY += headYChange;
+  if (nextDirection in headChange) {
+    headX += headChange[nextDirection].x;
+    headY += headChange[nextDirection].y;
+  }
 }
 
 function shortenSnake() {
@@ -84,15 +86,17 @@ function shortenSnake() {
 function renderGameScreen() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-
-  ctx.strokeStyle = "green";
-  ctx.lineWidth = 10;
-  ctx.strokeRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
 function drawApple() {
   ctx.fillStyle = "red";
   ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
+}
+
+function drawGameOver() {
+  ctx.fillStyle = "white";
+  ctx.font = "55px ubuntu mono";
+  ctx.fillText("Game Over! ", canvas.clientWidth / 5, canvas.clientHeight / 2);
 }
 
 function checkAppleCollision() {
@@ -105,37 +109,25 @@ function checkAppleCollision() {
   scoreContainer.textContent = "Score: " + score;
 }
 
-function drawGameOver() {
-  ctx.fillStyle = "white";
-  ctx.font = "55px ubuntu mono";
-  ctx.fillText("Game Over! ", canvas.clientWidth / 5, canvas.clientHeight / 2);
-}
-
-function checkSnakeBoardCollision() {
+function checkSnakeWithBoardCollision() {
   if (headX < 0 || headY < 0 || headX > tileCount || headY > tileCount) {
     return true;
   }
   return false;
 }
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowUp" && direction !== "down") {
-    headYChange = -1;
-    headXChange = 0;
-    nextDirection = "up";
-  } else if (event.key === "ArrowDown" && direction !== "up") {
-    headYChange = 1;
-    headXChange = 0;
-    nextDirection = "down";
-  } else if (event.key === "ArrowLeft" && direction !== "right") {
-    headXChange = -1;
-    headYChange = 0;
-    nextDirection = "left";
-  } else if (event.key === "ArrowRight" && direction !== "left") {
-    headXChange = 1;
-    headYChange = 0;
-    nextDirection = "right";
-  }
-});
+function handleInput() {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowUp" && direction !== "down") {
+      nextDirection = "up";
+    } else if (event.key === "ArrowDown" && direction !== "up") {
+      nextDirection = "down";
+    } else if (event.key === "ArrowLeft" && direction !== "right") {
+      nextDirection = "left";
+    } else if (event.key === "ArrowRight" && direction !== "left") {
+      nextDirection = "right";
+    }
+  });
+}
 
 drawGame();

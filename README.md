@@ -7,7 +7,3 @@ And in order to try out canvas in html.
 
 - HTML5 Canvas
 - JavaScript
-
-## Useful Links
-
-- [How to build a snake game](https://www.section.io/engineering-education/how-to-build-a-snake-game-with-javascript/)

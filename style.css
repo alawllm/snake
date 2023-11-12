@@ -9,6 +9,7 @@ body {
 }
 canvas {
   margin: 2rem;
+  border: 5px solid rgb(219, 97, 15);
 }
 .main-header {
   color: darkblue;
