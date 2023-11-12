@@ -34,19 +34,16 @@ const headChange = {
 function drawGame() {
   renderGameScreen();
   handleInput();
-  console.log(snakePositions);
 
   //is there a collision - snakeWithBoard, snakeWithSnake;
   //renderSnake - arg isThereACollision
   let isCollision = checkSnakeWithBoardCollision() || checkSnakeCollision();
 
-  // if (!checkSnakeCollision()) {
   renderSnake(isCollision);
   drawApple();
   checkAppleCollision();
   //setting direction to next direction, to avoid opposite moves
   direction = nextDirection;
-  // }
   if (!isCollision) {
     setTimeout(drawGame, 1000 / (score / 2 + 3));
   } else {
@@ -91,6 +88,7 @@ function updateHeadPosition() {
     headX += headChange[nextDirection].x;
     headY += headChange[nextDirection].y;
   }
+  console.log(snakePositions);
 }
 
 function shortenSnake() {
@@ -135,15 +133,15 @@ function checkSnakeCollision() {
     let newY = headY + headChange[nextDirection].y;
     //check if the new head values are in the snake array.
     //if yes, then there is a collision
-    const containsValues = snakePositions.some(
-      (position) => position.x === newX || position.y === newY
+    const collisionWithBody = snakePositions.some(
+      (position) => position.x === newX && position.y === newY
     );
     //object is a reference - check if these values are in the array
-    if (containsValues) {
-      console.log(containsValues);
+    if (collisionWithBody) {
+      console.log("collision with body!");
       return true;
     }
-    console.log(containsValues);
+    console.log("ok no collision with body");
     return false;
   }
 }
