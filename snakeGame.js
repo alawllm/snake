@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d");
 const scoreContainer = document.getElementById("score-container");
 
 //settings of the canvas
+//tiles counted from 0 to 19
 let tileCount = 20;
 let tileSize = 16;
 
@@ -33,12 +34,14 @@ const headChange = {
 
 function drawGame() {
   renderGameScreen();
+  //sets position of nextDirection for the next render
   handleInput();
 
-  //is there a collision - snakeWithBoard, snakeWithSnake;
-  //renderSnake - arg isThereACollision
   let isCollision = checkSnakeWithBoardCollision() || checkSnakeCollision();
 
+  //changes head position, pushes new x and y coordinates to snakePositions array
+  //loop that moves the snake forwardf
+  //pops unnecessary elements off the end of the snake
   renderSnake(isCollision);
   drawApple();
   checkAppleCollision();
@@ -57,10 +60,10 @@ function renderSnake(isCollision) {
 
   //loop - fill next rectangles from the array
   drawSnake();
+
   if (!isCollision) {
-    //update head position according to next direction
+    //update head position according to the direction
     updateHeadPosition();
-    //pop the last array element
     shortenSnake();
   }
 }
@@ -88,7 +91,8 @@ function updateHeadPosition() {
     headX += headChange[nextDirection].x;
     headY += headChange[nextDirection].y;
   }
-  console.log(snakePositions);
+  //logging shallow copy of the array to the console
+  console.log([...snakePositions]);
 }
 
 function shortenSnake() {
@@ -128,26 +132,20 @@ function setScoreOnScreen() {
 }
 
 function checkSnakeCollision() {
-  if (nextDirection in headChange) {
-    let newX = headX + headChange[nextDirection].x;
-    let newY = headY + headChange[nextDirection].y;
-    //check if the new head values are in the snake array.
-    //if yes, then there is a collision
-    const collisionWithBody = snakePositions.some(
-      (position) => position.x === newX && position.y === newY
-    );
-    //object is a reference - check if these values are in the array
-    if (collisionWithBody) {
-      console.log("collision with body!");
-      return true;
-    }
-    console.log("ok no collision with body");
-    return false;
+  const collisionWithBody = snakePositions.some(
+    (position) => position.x === headX && position.y === headY
+  );
+  //object is a reference - check if these values are in the array
+  if (collisionWithBody) {
+    console.log("collision with body!");
+    return true;
   }
+  console.log("ok no collision with body");
+  return false;
 }
 
 function checkSnakeWithBoardCollision() {
-  if (headX < 0 || headY < 0 || headX > tileCount || headY > tileCount) {
+  if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
     return true;
   }
   return false;
@@ -155,7 +153,6 @@ function checkSnakeWithBoardCollision() {
 
 function handleInput() {
   document.addEventListener("keydown", (event) => {
-    //snake can go only forwards - direction cannot be opposite than it is
     if (event.key === "ArrowUp" && direction !== "down") {
       nextDirection = "up";
     } else if (event.key === "ArrowDown" && direction !== "up") {
