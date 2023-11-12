@@ -1,6 +1,7 @@
 const canvas = document.getElementById("game");
-//ctx returns reference to canvas' 2d drawing api object
 const ctx = canvas.getContext("2d");
+
+const scoreContainer = document.getElementById("score-container");
 
 //1. set canvas context, define the logic of the game
 //2. set up the snake - initial position on the canvas
@@ -23,44 +24,42 @@ let headY = 10;
 let headXChange = 0;
 let headYChange = 0;
 
-let refreshSpeed = 5;
-
-//initial direction
 let direction;
+let nextDirection;
 
 let appleX = 5;
 let appleY = 5;
 
 let score = 0;
 
-//store position of the snake
-//snakePositions[0].x, snakePositions[0].y
 let snakePositions = [];
 let snakeLength = 1;
 
 function drawGame() {
-  clearScreen();
+  renderGameScreen();
   renderSnake();
   drawApple();
-  checkCollision();
-  setTimeout(drawGame, 1000 / refreshSpeed);
+  checkAppleCollision();
+  direction = nextDirection;
+  if (!checkSnakeBoardCollision()) {
+    setTimeout(drawGame, 1000 / (score / 2 + 3));
+  } else {
+    drawGameOver();
+  }
 }
 
 function renderSnake() {
-  ctx.fillStyle = "green";
-
-  //adding new head position
+  //add new head position
   snakePositions.unshift({ x: headX, y: headY });
 
   drawSnake();
-  //updating head position
-  headX += headXChange;
-  headY += headYChange;
-
+  updateHeadPosition();
   shortenSnake();
 }
 
 function drawSnake() {
+  ctx.fillStyle = "green";
+
   for (let i = 0; i < snakePositions.length; i++) {
     ctx.fillRect(
       snakePositions[i].x * tileCount,
@@ -71,21 +70,23 @@ function drawSnake() {
   }
 }
 
+function updateHeadPosition() {
+  headX += headXChange;
+  headY += headYChange;
+}
+
 function shortenSnake() {
   if (snakePositions.length >= snakeLength) {
     snakePositions.pop();
   }
 }
 
-function clearScreen() {
-  ctx.strokeStyle = "green";
+function renderGameScreen() {
   ctx.fillStyle = "black";
-
-  ctx.lineWidth = 10;
-
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
-  // Draw a border around the canvas
+  ctx.strokeStyle = "green";
+  ctx.lineWidth = 10;
   ctx.strokeRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
@@ -94,32 +95,46 @@ function drawApple() {
   ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
 }
 
-function checkCollision() {
+function checkAppleCollision() {
   if (appleX === headX && appleY === headY) {
     appleX = Math.floor(Math.random() * tileCount);
     appleY = Math.floor(Math.random() * tileCount);
     snakeLength++;
     score++;
   }
+  scoreContainer.textContent = "Score: " + score;
+}
+
+function drawGameOver() {
+  ctx.fillStyle = "white";
+  ctx.font = "55px ubuntu mono";
+  ctx.fillText("Game Over! ", canvas.clientWidth / 5, canvas.clientHeight / 2);
+}
+
+function checkSnakeBoardCollision() {
+  if (headX < 0 || headY < 0 || headX > tileCount || headY > tileCount) {
+    return true;
+  }
+  return false;
 }
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowUp" && direction !== "down") {
     headYChange = -1;
     headXChange = 0;
-    direction = "up";
+    nextDirection = "up";
   } else if (event.key === "ArrowDown" && direction !== "up") {
     headYChange = 1;
     headXChange = 0;
-    direction = "down";
+    nextDirection = "down";
   } else if (event.key === "ArrowLeft" && direction !== "right") {
     headXChange = -1;
     headYChange = 0;
-    direction = "left";
+    nextDirection = "left";
   } else if (event.key === "ArrowRight" && direction !== "left") {
     headXChange = 1;
     headYChange = 0;
-    direction = "right";
+    nextDirection = "right";
   }
 });
 
