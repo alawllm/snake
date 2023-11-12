@@ -31,26 +31,36 @@ let direction;
 let appleX = 5;
 let appleY = 5;
 
+let score = 0;
+
 //store position of the snake
 //snakePositions[0].x, snakePositions[0].y
-let snakePositions = [{ x: headX, y: headY }];
+let snakePositions = [];
 let snakeLength = 1;
 
 function drawGame() {
   clearScreen();
-  drawSnake();
+  renderSnake();
   drawApple();
   checkCollision();
   setTimeout(drawGame, 1000 / refreshSpeed);
 }
 
-function drawSnake() {
+function renderSnake() {
   ctx.fillStyle = "green";
 
-  //array of fields - actualized when the snake is moving
-  //make the snake grow with every move
+  //adding new head position
   snakePositions.unshift({ x: headX, y: headY });
 
+  drawSnake();
+  //updating head position
+  headX += headXChange;
+  headY += headYChange;
+
+  shortenSnake();
+}
+
+function drawSnake() {
   for (let i = 0; i < snakePositions.length; i++) {
     ctx.fillRect(
       snakePositions[i].x * tileCount,
@@ -59,18 +69,24 @@ function drawSnake() {
       tileSize
     );
   }
+}
 
-  headX += headXChange;
-  headY += headYChange;
-
-  if (snakePositions.length > snakeLength) {
+function shortenSnake() {
+  if (snakePositions.length >= snakeLength) {
     snakePositions.pop();
   }
 }
 
 function clearScreen() {
+  ctx.strokeStyle = "green";
   ctx.fillStyle = "black";
+
+  ctx.lineWidth = 10;
+
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+  // Draw a border around the canvas
+  ctx.strokeRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
 function drawApple() {
@@ -83,6 +99,7 @@ function checkCollision() {
     appleX = Math.floor(Math.random() * tileCount);
     appleY = Math.floor(Math.random() * tileCount);
     snakeLength++;
+    score++;
   }
 }
 
