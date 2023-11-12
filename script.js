@@ -40,6 +40,7 @@ function drawGame() {
   clearScreen();
   drawSnake();
   drawApple();
+  checkCollision();
   setTimeout(drawGame, 1000 / refreshSpeed);
 }
 
@@ -61,6 +62,10 @@ function drawSnake() {
 
   headX += headXChange;
   headY += headYChange;
+
+  if (snakePositions.length > snakeLength) {
+    snakePositions.pop();
+  }
 }
 
 function clearScreen() {
@@ -73,27 +78,31 @@ function drawApple() {
   ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
 }
 
+function checkCollision() {
+  if (appleX === headX && appleY === headY) {
+    appleX = Math.floor(Math.random() * tileCount);
+    appleY = Math.floor(Math.random() * tileCount);
+    snakeLength++;
+  }
+}
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowUp" && direction !== "down") {
     headYChange = -1;
     headXChange = 0;
     direction = "up";
-    snakeLength++;
   } else if (event.key === "ArrowDown" && direction !== "up") {
     headYChange = 1;
     headXChange = 0;
     direction = "down";
-    snakeLength++;
   } else if (event.key === "ArrowLeft" && direction !== "right") {
     headXChange = -1;
     headYChange = 0;
     direction = "left";
-    snakeLength++;
   } else if (event.key === "ArrowRight" && direction !== "left") {
     headXChange = 1;
     headYChange = 0;
     direction = "right";
-    snakeLength++;
   }
 });
 
