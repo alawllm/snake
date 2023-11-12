@@ -11,7 +11,9 @@ let tileSize = 16;
 let headX = 10;
 let headY = 10;
 
+//using direction to make sure no opposite moves
 let direction;
+//using nextDirection to decide the movements from the dictionary
 let nextDirection;
 
 let appleX = 5;
@@ -32,25 +34,38 @@ const headChange = {
 function drawGame() {
   renderGameScreen();
   handleInput();
+  console.log(snakePositions);
+
   //is there a collision - snakeWithBoard, snakeWithSnake;
   //renderSnake - arg isThereACollision
+  let isCollision = checkSnakeWithBoardCollision() || checkSnakeCollision();
 
-  renderSnake();
+  // if (!checkSnakeCollision()) {
+  renderSnake(isCollision);
   drawApple();
   checkAppleCollision();
+  //setting direction to next direction, to avoid opposite moves
   direction = nextDirection;
-  if (!checkSnakeWithBoardCollision()) {
+  // }
+  if (!isCollision) {
     setTimeout(drawGame, 1000 / (score / 2 + 3));
   } else {
     drawGameOver();
   }
 }
 
-function renderSnake() {
-  addNewHeadPosition();
+function renderSnake(isCollision) {
+  //add new x and y position to the beginning of the array
+  if (!isCollision) addNewHeadPosition();
+
+  //loop - fill next rectangles from the array
   drawSnake();
-  updateHeadPosition();
-  shortenSnake();
+  if (!isCollision) {
+    //update head position according to next direction
+    updateHeadPosition();
+    //pop the last array element
+    shortenSnake();
+  }
 }
 
 function addNewHeadPosition() {
@@ -71,6 +86,7 @@ function drawSnake() {
 }
 
 function updateHeadPosition() {
+  //making sure that next direction is not undefined as it is at the beginning
   if (nextDirection in headChange) {
     headX += headChange[nextDirection].x;
     headY += headChange[nextDirection].y;
@@ -106,7 +122,30 @@ function checkAppleCollision() {
     snakeLength++;
     score++;
   }
+  setScoreOnScreen();
+}
+
+function setScoreOnScreen() {
   scoreContainer.textContent = "Score: " + score;
+}
+
+function checkSnakeCollision() {
+  if (nextDirection in headChange) {
+    let newX = headX + headChange[nextDirection].x;
+    let newY = headY + headChange[nextDirection].y;
+    //check if the new head values are in the snake array.
+    //if yes, then there is a collision
+    const containsValues = snakePositions.some(
+      (position) => position.x === newX || position.y === newY
+    );
+    //object is a reference - check if these values are in the array
+    if (containsValues) {
+      console.log(containsValues);
+      return true;
+    }
+    console.log(containsValues);
+    return false;
+  }
 }
 
 function checkSnakeWithBoardCollision() {
@@ -118,6 +157,7 @@ function checkSnakeWithBoardCollision() {
 
 function handleInput() {
   document.addEventListener("keydown", (event) => {
+    //snake can go only forwards - direction cannot be opposite than it is
     if (event.key === "ArrowUp" && direction !== "down") {
       nextDirection = "up";
     } else if (event.key === "ArrowDown" && direction !== "up") {
