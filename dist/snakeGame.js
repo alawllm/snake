@@ -2,6 +2,7 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const scoreContainer = document.getElementById("score-container");
+const newGameButton = document.getElementById("new-button");
 //settings of the canvas
 //tiles counted from 0 to 19
 let tileCount = 20;
@@ -41,6 +42,7 @@ function drawGame() {
         setTimeout(drawGame, 1000 / (score / 2 + 3));
     }
     else {
+        enableNewGameOnClick();
         drawGameOver();
     }
 }
@@ -90,8 +92,29 @@ function drawApple() {
 }
 function drawGameOver() {
     ctx.fillStyle = "white";
-    ctx.font = "55px ubuntu mono";
-    ctx.fillText("Game Over! ", canvas.clientWidth / 5, canvas.clientHeight / 2);
+    ctx.font = "55px handjet";
+    ctx.fillText("Game Over!", canvas.clientWidth / 5, canvas.clientHeight / 2);
+}
+function enableNewGameOnClick() {
+    newGameButton.addEventListener("click", startNewGame);
+}
+function startNewGame() {
+    console.log("start new game!");
+    // Remove the event listener before starting a new game
+    // Call drawGame to start a new game
+    newGameButton.removeEventListener("click", startNewGame);
+    resetGameState();
+    drawGame();
+}
+function resetGameState() {
+    headX = 10;
+    headY = 10;
+    nextDirection = undefined; // Set nextDirection to undefined
+    appleX = Math.floor(Math.random() * tileCount);
+    appleY = Math.floor(Math.random() * tileCount);
+    score = 0;
+    snakePositions = [];
+    snakeLength = 1;
 }
 function checkAppleCollision() {
     if (appleX === headX && appleY === headY) {
@@ -109,10 +132,8 @@ function checkSnakeCollision() {
     const collisionWithBody = snakePositions.some((position) => position.x === headX && position.y === headY);
     //object is a reference - check if these values are in the array
     if (collisionWithBody) {
-        console.log("collision with body!");
         return true;
     }
-    console.log("ok no collision with body");
     return false;
 }
 function checkSnakeWithBoardCollision() {

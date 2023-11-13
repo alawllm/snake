@@ -5,5 +5,6 @@ And in order to try out canvas in html.
 
 ## Tech stack:
 
-- HTML5 Canvas
-- JavaScript
+- TypeScript
+- CSS
+- HTML5
