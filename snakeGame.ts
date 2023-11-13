@@ -63,7 +63,7 @@ function drawGame(): void {
   //setting direction to next direction, to avoid opposite moves
   direction = nextDirection;
   if (!isCollision) {
-    setTimeout(drawGame, 1000 / (score / 2 + 3));
+    setTimeout(drawGame, 1000 / (score / 2) - 10);
   } else {
     enableNewGameOnClick();
     drawGameOver();
