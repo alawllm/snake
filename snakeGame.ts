@@ -55,7 +55,7 @@ function drawGame(): void {
   let isCollision = checkSnakeWithBoardCollision() || checkSnakeCollision();
 
   //changes head position, pushes new x and y coordinates to snakePositions array
-  //loop that moves the snake forwardf
+  //loop that moves the snake forward
   //pops unnecessary elements off the end of the snake
   renderSnake(isCollision);
   drawApple();
