@@ -1,6 +1,7 @@
 body {
   margin: 0px;
   padding: 0px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,13 +10,13 @@ body {
 }
 canvas {
   margin: 1rem;
-  border: 5px solid rgb(219, 97, 15);
+  border: 7px solid rgb(69, 220, 179);
 }
 .main-header {
   color: darkblue;
   font-size: 3.5rem;
-  font-weight: 500;
-  margin: 1rem;
+  font-weight: 600;
+  margin: 0.8rem;
 }
 
 #score-container {
@@ -30,7 +31,7 @@ canvas {
   font-size: 1.5rem;
   text-decoration: none;
   border: none;
-  background-color: rgb(107, 200, 132);
+  background-color: rgb(56, 164, 85);
   padding: 0.5rem;
   border-radius: 10px;
   margin: 0.5rem;
@@ -38,5 +39,9 @@ canvas {
 }
 
 #new-button:hover {
-  background-color: rgb(119, 227, 148);
+  background-color: rgb(119, 227, 173);
+}
+
+footer {
+  margin-top: 1rem;
 }
