@@ -31,7 +31,7 @@ function drawGame() {
     handleInput();
     let isCollision = checkSnakeWithBoardCollision() || checkSnakeCollision();
     //changes head position, pushes new x and y coordinates to snakePositions array
-    //loop that moves the snake forwardf
+    //loop that moves the snake forward
     //pops unnecessary elements off the end of the snake
     renderSnake(isCollision);
     drawApple();
@@ -39,7 +39,7 @@ function drawGame() {
     //setting direction to next direction, to avoid opposite moves
     direction = nextDirection;
     if (!isCollision) {
-        setTimeout(drawGame, 1000 / (score / 2 + 3));
+        setTimeout(drawGame, 1000 / (score / 2 + 3.3));
     }
     else {
         enableNewGameOnClick();
@@ -93,7 +93,7 @@ function drawApple() {
 function drawGameOver() {
     ctx.fillStyle = "white";
     ctx.font = "55px handjet";
-    ctx.fillText("Game Over!", canvas.clientWidth / 5, canvas.clientHeight / 2);
+    ctx.fillText("Game Over!", canvas.clientWidth / 6.5, canvas.clientHeight / 2);
 }
 function enableNewGameOnClick() {
     newGameButton.addEventListener("click", startNewGame);

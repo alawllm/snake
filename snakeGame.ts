@@ -63,7 +63,7 @@ function drawGame(): void {
   //setting direction to next direction, to avoid opposite moves
   direction = nextDirection;
   if (!isCollision) {
-    setTimeout(drawGame, 1000 / (score / 2) - 10);
+    setTimeout(drawGame, 1000 / (score / 2 + 3.3));
   } else {
     enableNewGameOnClick();
     drawGameOver();
@@ -131,7 +131,7 @@ function drawApple(): void {
 function drawGameOver(): void {
   ctx.fillStyle = "white";
   ctx.font = "55px handjet";
-  ctx.fillText("Game Over!", canvas.clientWidth / 5, canvas.clientHeight / 2);
+  ctx.fillText("Game Over!", canvas.clientWidth / 6.5, canvas.clientHeight / 2);
 }
 
 function enableNewGameOnClick(): void {
