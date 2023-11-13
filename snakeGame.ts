@@ -1,7 +1,7 @@
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+const canvas = <HTMLCanvasElement>document.getElementById("game");
+const ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
 
-const scoreContainer = document.getElementById("score-container");
+const scoreContainer = <HTMLElement>document.getElementById("score-container");
 
 //settings of the canvas
 //tiles counted from 0 to 19
@@ -13,26 +13,40 @@ let headX = 10;
 let headY = 10;
 
 //using direction to make sure no opposite moves
-let direction;
+let direction: string;
 //using nextDirection to decide the movements from the dictionary
-let nextDirection;
+let nextDirection: any;
 
-let appleX = 5;
-let appleY = 5;
+let appleX = Math.floor(Math.random() * tileCount);
+let appleY = Math.floor(Math.random() * tileCount);
 
 let score = 0;
 
-let snakePositions = [];
+type SnakePositionsObject = {
+  x: number;
+  y: number;
+};
+
+type SnakePositionsArray = SnakePositionsObject[];
+
+let snakePositions: SnakePositionsArray = [];
 let snakeLength = 1;
 
-const headChange = {
+type HeadChangeObject = {
+  up: { x: number; y: number };
+  down: { x: number; y: number };
+  left: { x: number; y: number };
+  right: { x: number; y: number };
+};
+
+const headChange: HeadChangeObject = {
   up: { x: 0, y: -1 },
   down: { x: 0, y: 1 },
   left: { x: -1, y: 0 },
   right: { x: 1, y: 0 },
 };
 
-function drawGame() {
+function drawGame(): void {
   renderGameScreen();
   //sets position of nextDirection for the next render
   handleInput();
@@ -54,7 +68,7 @@ function drawGame() {
   }
 }
 
-function renderSnake(isCollision) {
+function renderSnake(isCollision: boolean): void {
   //add new x and y position to the beginning of the array
   if (!isCollision) addNewHeadPosition();
 
@@ -68,7 +82,7 @@ function renderSnake(isCollision) {
   }
 }
 
-function addNewHeadPosition() {
+function addNewHeadPosition(): void {
   snakePositions.unshift({ x: headX, y: headY });
 }
 
@@ -85,39 +99,40 @@ function drawSnake() {
   }
 }
 
-function updateHeadPosition() {
+function updateHeadPosition(): void {
+  const tempNextDirection = headChange[nextDirection as keyof HeadChangeObject];
   //making sure that next direction is not undefined as it is at the beginning
   if (nextDirection in headChange) {
-    headX += headChange[nextDirection].x;
-    headY += headChange[nextDirection].y;
+    headX += tempNextDirection.x;
+    headY += tempNextDirection.y;
   }
   //logging shallow copy of the array to the console
   console.log([...snakePositions]);
 }
 
-function shortenSnake() {
+function shortenSnake(): void {
   if (snakePositions.length >= snakeLength) {
     snakePositions.pop();
   }
 }
 
-function renderGameScreen() {
+function renderGameScreen(): void {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
-function drawApple() {
+function drawApple(): void {
   ctx.fillStyle = "red";
   ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
 }
 
-function drawGameOver() {
+function drawGameOver(): void {
   ctx.fillStyle = "white";
   ctx.font = "55px ubuntu mono";
   ctx.fillText("Game Over! ", canvas.clientWidth / 5, canvas.clientHeight / 2);
 }
 
-function checkAppleCollision() {
+function checkAppleCollision(): void {
   if (appleX === headX && appleY === headY) {
     appleX = Math.floor(Math.random() * tileCount);
     appleY = Math.floor(Math.random() * tileCount);
@@ -127,11 +142,11 @@ function checkAppleCollision() {
   setScoreOnScreen();
 }
 
-function setScoreOnScreen() {
+function setScoreOnScreen(): void {
   scoreContainer.textContent = "Score: " + score;
 }
 
-function checkSnakeCollision() {
+function checkSnakeCollision(): boolean {
   const collisionWithBody = snakePositions.some(
     (position) => position.x === headX && position.y === headY
   );
@@ -144,14 +159,14 @@ function checkSnakeCollision() {
   return false;
 }
 
-function checkSnakeWithBoardCollision() {
+function checkSnakeWithBoardCollision(): boolean {
   if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
     return true;
   }
   return false;
 }
 
-function handleInput() {
+function handleInput(): void {
   document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp" && direction !== "down") {
       nextDirection = "up";

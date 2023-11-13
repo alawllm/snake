@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "strict": true,
+    "sourceMap": true,
+    "lib": ["es5", "dom"],
+    "noUnusedLocals": true,
+    "module": "commonjs",
+    "outDir": "./dist"
+  },
+  "files": ["snakeGame.ts"]
+}
