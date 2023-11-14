@@ -1,6 +1,6 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
 import { generateRandomApplePosition } from "./game.js";
-import { checkSnakeCollision } from "./snake.js";
+import { checkSnakeCollision, checkSnakeWithBoardCollision, shortenSnake, addNewHeadPosition, drawSnake, } from "./snake.js";
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const scoreContainer = document.getElementById("score-container");
@@ -31,7 +31,7 @@ function drawGame() {
     renderGameScreen(ctx, canvas);
     //sets position of nextDirection for the next render
     handleInput();
-    let isCollision = checkSnakeWithBoardCollision() ||
+    let isCollision = checkSnakeWithBoardCollision(headX, headY, tileCount) ||
         checkSnakeCollision(snakePositions, headX, headY);
     renderSnake(isCollision);
     drawApple(ctx, appleX, appleY, tileCount, tileSize);
@@ -49,24 +49,26 @@ function drawGame() {
 function renderSnake(isCollision) {
     //add new x and y position to the beginning of the array
     if (!isCollision)
-        addNewHeadPosition();
+        addNewHeadPosition(snakePositions, headX, headY);
     //loop - fill next rectangles from the array
-    drawSnake();
+    drawSnake(ctx, snakePositions, tileCount, tileSize);
     if (!isCollision) {
         //update head position according to the direction
         updateHeadPosition();
-        shortenSnake();
+        shortenSnake(snakePositions, snakeLength);
     }
 }
-function addNewHeadPosition() {
-    snakePositions.unshift({ x: headX, y: headY });
-}
-function drawSnake() {
-    ctx.fillStyle = "green";
-    for (let i = 0; i < snakePositions.length; i++) {
-        ctx.fillRect(snakePositions[i].x * tileCount, snakePositions[i].y * tileCount, tileSize, tileSize);
-    }
-}
+// function drawSnake(): void {
+//   ctx.fillStyle = "green";
+//   for (let i = 0; i < snakePositions.length; i++) {
+//     ctx.fillRect(
+//       snakePositions[i].x * tileCount,
+//       snakePositions[i].y * tileCount,
+//       tileSize,
+//       tileSize
+//     );
+//   }
+// }
 function updateHeadPosition() {
     const tempNextDirection = headChange[nextDirection];
     //making sure that next direction is not undefined as it is at the beginning
@@ -77,18 +79,11 @@ function updateHeadPosition() {
     //logging shallow copy of the array to the console
     console.log([...snakePositions]);
 }
-function shortenSnake() {
-    if (snakePositions.length >= snakeLength) {
-        snakePositions.pop();
-    }
-}
 function enableNewGameOnClick() {
     newGameButton.addEventListener("click", startNewGame);
 }
 function startNewGame() {
     console.log("start new game!");
-    // Remove the event listener before starting a new game
-    // Call drawGame to start a new game
     newGameButton.removeEventListener("click", startNewGame);
     resetGameState();
     drawGame();
@@ -112,12 +107,6 @@ function checkAppleCollision() {
         score++;
     }
     setScoreOnScreen(score, scoreContainer);
-}
-function checkSnakeWithBoardCollision() {
-    if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
-        return true;
-    }
-    return false;
 }
 function handleInput() {
     document.addEventListener("keydown", (event) => {
