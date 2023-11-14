@@ -3,10 +3,11 @@
     "target": "es6",
     "strict": true,
     "sourceMap": true,
-    "lib": ["es5", "dom"],
+    "lib": ["ES6", "dom"],
     "noUnusedLocals": true,
-    "module": "commonjs",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "module": "es6",
+    "moduleResolution": "node"
   },
-  "files": ["snakeGame.ts"]
+  "files": ["src/app.ts", "src/render.ts"]
 }

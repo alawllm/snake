@@ -1,5 +1,16 @@
-const canvas = <HTMLCanvasElement>document.getElementById("game");
-const ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
+import {
+  drawGameOver,
+  renderGameScreen,
+  drawApple,
+  setScoreOnScreen,
+} from "./render.js";
+
+import { generateRandomApplePosition } from "./game.js";
+
+import { checkSnakeCollision } from "./snake.js";
+
+const canvas = document.getElementById("game") as HTMLCanvasElement;
+const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 const scoreContainer = <HTMLElement>document.getElementById("score-container");
 
@@ -48,17 +59,16 @@ const headChange: HeadChangeObject = {
 };
 
 function drawGame(): void {
-  renderGameScreen();
+  renderGameScreen(ctx, canvas);
   //sets position of nextDirection for the next render
   handleInput();
 
-  let isCollision = checkSnakeWithBoardCollision() || checkSnakeCollision();
+  let isCollision: boolean =
+    checkSnakeWithBoardCollision() ||
+    checkSnakeCollision(snakePositions, headX, headY);
 
-  //changes head position, pushes new x and y coordinates to snakePositions array
-  //loop that moves the snake forward
-  //pops unnecessary elements off the end of the snake
   renderSnake(isCollision);
-  drawApple();
+  drawApple(ctx, appleX, appleY, tileCount, tileSize);
   checkAppleCollision();
   //setting direction to next direction, to avoid opposite moves
   direction = nextDirection;
@@ -66,7 +76,7 @@ function drawGame(): void {
     setTimeout(drawGame, 1000 / (score / 2 + 3.3));
   } else {
     enableNewGameOnClick();
-    drawGameOver();
+    drawGameOver(ctx, canvas);
   }
 }
 
@@ -118,22 +128,6 @@ function shortenSnake(): void {
   }
 }
 
-function renderGameScreen(): void {
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-}
-
-function drawApple(): void {
-  ctx.fillStyle = "red";
-  ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
-}
-
-function drawGameOver(): void {
-  ctx.fillStyle = "white";
-  ctx.font = "55px handjet";
-  ctx.fillText("Game Over!", canvas.clientWidth / 6.5, canvas.clientHeight / 2);
-}
-
 function enableNewGameOnClick(): void {
   newGameButton.addEventListener("click", startNewGame);
 }
@@ -150,7 +144,7 @@ function startNewGame(): void {
 function resetGameState(): void {
   headX = 10;
   headY = 10;
-  nextDirection = undefined; // Set nextDirection to undefined
+  nextDirection = undefined;
   appleX = Math.floor(Math.random() * tileCount);
   appleY = Math.floor(Math.random() * tileCount);
   score = 0;
@@ -160,27 +154,17 @@ function resetGameState(): void {
 
 function checkAppleCollision(): void {
   if (appleX === headX && appleY === headY) {
-    appleX = Math.floor(Math.random() * tileCount);
-    appleY = Math.floor(Math.random() * tileCount);
+    const { newAppleX, newAppleY } = generateRandomApplePosition(
+      appleX,
+      appleY,
+      tileCount
+    );
+    appleX = newAppleX;
+    appleY = newAppleY;
     snakeLength++;
     score++;
   }
-  setScoreOnScreen();
-}
-
-function setScoreOnScreen(): void {
-  scoreContainer.textContent = "Score: " + score;
-}
-
-function checkSnakeCollision(): boolean {
-  const collisionWithBody = snakePositions.some(
-    (position) => position.x === headX && position.y === headY
-  );
-  //object is a reference - check if these values are in the array
-  if (collisionWithBody) {
-    return true;
-  }
-  return false;
+  setScoreOnScreen(score, scoreContainer);
 }
 
 function checkSnakeWithBoardCollision(): boolean {
