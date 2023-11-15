@@ -1,17 +1,3 @@
-export const checkSnakeCollision = (snakePositions, headX, headY) => {
-    const collisionWithBody = snakePositions.some((position) => position.x === headX && position.y === headY);
-    //object is a reference - check if these values are in the array
-    if (collisionWithBody) {
-        return true;
-    }
-    return false;
-};
-export const checkSnakeWithBoardCollision = (headX, headY, tileCount) => {
-    if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
-        return true;
-    }
-    return false;
-};
 export const shortenSnake = (snakePositions, snakeLength) => {
     if (snakePositions.length >= snakeLength) {
         snakePositions.pop();
@@ -25,5 +11,30 @@ export const drawSnake = (ctx, snakePositions, tileCount, tileSize) => {
     for (let i = 0; i < snakePositions.length; i++) {
         ctx.fillRect(snakePositions[i].x * tileCount, snakePositions[i].y * tileCount, tileSize, tileSize);
     }
+};
+export const updateHeadPosition = (headChange, nextDirection, headX, headY) => {
+    const tempNextDirection = headChange[nextDirection];
+    let newHeadX = headX;
+    let newHeadY = headY;
+    //making sure that next direction is not undefined as it is at the beginning
+    if (nextDirection in headChange) {
+        newHeadX += tempNextDirection.x;
+        newHeadY += tempNextDirection.y;
+    }
+    return { newHeadX, newHeadY };
+};
+export const checkSnakeCollision = (snakePositions, headX, headY) => {
+    const collisionWithBody = snakePositions.some((position) => position.x === headX && position.y === headY);
+    //object is a reference - check if these values are in the array
+    if (collisionWithBody) {
+        return true;
+    }
+    return false;
+};
+export const checkSnakeWithBoardCollision = (headX, headY, tileCount) => {
+    if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
+        return true;
+    }
+    return false;
 };
 //# sourceMappingURL=snake.js.map

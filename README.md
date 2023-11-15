@@ -8,3 +8,4 @@ And in order to try out canvas in html.
 - TypeScript
 - CSS
 - HTML5
+- Jest
