@@ -1,8 +1,7 @@
-export const generateRandomApplePosition = (tileCount: number) => {
-  const newAppleX = Math.floor(Math.random() * tileCount);
-  const newAppleY = Math.floor(Math.random() * tileCount);
+export const generateRandomPosition = (tileCount: number) => {
+  const newRandom = Math.floor(Math.random() * tileCount);
 
-  return { newAppleX, newAppleY };
+  return { newRandom };
 };
 
 type StartNewGameFunction = () => void;
@@ -12,4 +11,9 @@ export const enableNewGameOnClick = (
   startNewGame: StartNewGameFunction
 ): void => {
   newGameButton.addEventListener("click", startNewGame);
+};
+
+export const increaseByOne = (num: number): { num: number } => {
+  num++;
+  return { num };
 };

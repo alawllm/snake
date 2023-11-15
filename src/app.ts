@@ -5,7 +5,11 @@ import {
   setScoreOnScreen,
 } from "./render.js";
 
-import { generateRandomApplePosition, enableNewGameOnClick } from "./game.js";
+import {
+  generateRandomPosition,
+  enableNewGameOnClick,
+  increaseByOne,
+} from "./game.js";
 
 import {
   checkSnakeCollision,
@@ -34,18 +38,11 @@ let direction: string;
 let nextDirection: any;
 //this function returns an object with properties newAppleX, newAppleY
 //these properties can be accessed using the dot syntax
-let appleX = generateRandomApplePosition(tileCount).newAppleX;
-let appleY = generateRandomApplePosition(tileCount).newAppleY;
+let appleX = generateRandomPosition(tileCount).newRandom;
+let appleY = generateRandomPosition(tileCount).newRandom;
 let score = 0;
 
-type SnakePositionsObject = {
-  x: number;
-  y: number;
-};
-
-type SnakePositionsArray = SnakePositionsObject[];
-
-let snakePositions: SnakePositionsArray = [];
+let snakePositions: { x: number; y: number }[] = [];
 let snakeLength = 1;
 
 type HeadChangeObject = {
@@ -83,51 +80,55 @@ const drawGame = (): void => {
     drawGameOver(ctx, canvas);
   }
 };
-
+//modifies global variables
 const renderSnake = (isCollision: boolean): void => {
   if (!isCollision) addNewHeadPosition(snakePositions, headX, headY);
   drawSnake(ctx, snakePositions, tileCount, tileSize);
   if (!isCollision) {
-    const { newHeadX, newHeadY } = updateHeadPosition(
+    headX = updateHeadPosition(
       headChange,
       nextDirection,
       headX,
       headY
-    );
-    headX = newHeadX;
-    headY = newHeadY;
+    ).newHeadX;
+    headY = updateHeadPosition(
+      headChange,
+      nextDirection,
+      headX,
+      headY
+    ).newHeadY;
     shortenSnake(snakePositions, snakeLength);
   }
 };
-
+//modifies global variables
 const checkAppleCollision = (): void => {
   if (appleX === headX && appleY === headY) {
-    appleX = generateRandomApplePosition(tileCount).newAppleX;
-    appleY = generateRandomApplePosition(tileCount).newAppleY;
-    snakeLength++;
-    score++;
+    appleX = generateRandomPosition(tileCount).newRandom;
+    appleY = generateRandomPosition(tileCount).newRandom;
+    snakeLength = increaseByOne(snakeLength).num;
+    score = increaseByOne(score).num;
   }
   setScoreOnScreen(score, scoreContainer);
 };
-
+//calls other functions that modify global variables
 const startNewGame = (): void => {
   console.log("start new game!");
   newGameButton.removeEventListener("click", startNewGame);
   resetGameState();
   drawGame();
 };
-
+//not pure - modifies global variables
 const resetGameState = (): void => {
   headX = 10;
   headY = 10;
   nextDirection = undefined;
-  appleX = Math.floor(Math.random() * tileCount);
-  appleY = Math.floor(Math.random() * tileCount);
+  appleX = generateRandomPosition(tileCount).newRandom;
+  appleY = generateRandomPosition(tileCount).newRandom;
   score = 0;
   snakePositions = [];
   snakeLength = 1;
 };
-
+//listens to a global event
 const handleInput = (): void => {
   document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp" && direction !== "down") {

@@ -1,5 +1,5 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
-import { generateRandomApplePosition, enableNewGameOnClick } from "./game.js";
+import { generateRandomPosition, enableNewGameOnClick, increaseByOne, } from "./game.js";
 import { checkSnakeCollision, checkSnakeWithBoardCollision, shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, } from "./snake.js";
 //canvas or dom elements
 const canvas = document.getElementById("game");
@@ -18,8 +18,8 @@ let direction;
 let nextDirection;
 //this function returns an object with properties newAppleX, newAppleY
 //these properties can be accessed using the dot syntax
-let appleX = generateRandomApplePosition(tileCount).newAppleX;
-let appleY = generateRandomApplePosition(tileCount).newAppleY;
+let appleX = generateRandomPosition(tileCount).newRandom;
+let appleY = generateRandomPosition(tileCount).newRandom;
 let score = 0;
 let snakePositions = [];
 let snakeLength = 1;
@@ -29,7 +29,7 @@ const headChange = {
     left: { x: -1, y: 0 },
     right: { x: 1, y: 0 },
 };
-function drawGame() {
+const drawGame = () => {
     renderGameScreen(ctx, canvas);
     handleInput();
     let isCollision = checkSnakeWithBoardCollision(headX, headY, tileCount) ||
@@ -46,44 +46,48 @@ function drawGame() {
         enableNewGameOnClick(newGameButton, startNewGame);
         drawGameOver(ctx, canvas);
     }
-}
-function renderSnake(isCollision) {
+};
+//modifies global variables
+const renderSnake = (isCollision) => {
     if (!isCollision)
         addNewHeadPosition(snakePositions, headX, headY);
     drawSnake(ctx, snakePositions, tileCount, tileSize);
     if (!isCollision) {
-        const { newHeadX, newHeadY } = updateHeadPosition(headChange, nextDirection, headX, headY);
-        headX = newHeadX;
-        headY = newHeadY;
+        headX = updateHeadPosition(headChange, nextDirection, headX, headY).newHeadX;
+        headY = updateHeadPosition(headChange, nextDirection, headX, headY).newHeadY;
         shortenSnake(snakePositions, snakeLength);
     }
-}
-function checkAppleCollision() {
+};
+//modifies global variables
+const checkAppleCollision = () => {
     if (appleX === headX && appleY === headY) {
-        appleX = generateRandomApplePosition(tileCount).newAppleX;
-        appleY = generateRandomApplePosition(tileCount).newAppleY;
-        snakeLength++;
-        score++;
+        appleX = generateRandomPosition(tileCount).newRandom;
+        appleY = generateRandomPosition(tileCount).newRandom;
+        snakeLength = increaseByOne(snakeLength).num;
+        score = increaseByOne(score).num;
     }
     setScoreOnScreen(score, scoreContainer);
-}
-function startNewGame() {
+};
+//calls other functions that modify global variables
+const startNewGame = () => {
     console.log("start new game!");
     newGameButton.removeEventListener("click", startNewGame);
     resetGameState();
     drawGame();
-}
-function resetGameState() {
+};
+//not pure - modifies global variables
+const resetGameState = () => {
     headX = 10;
     headY = 10;
     nextDirection = undefined;
-    appleX = Math.floor(Math.random() * tileCount);
-    appleY = Math.floor(Math.random() * tileCount);
+    appleX = generateRandomPosition(tileCount).newRandom;
+    appleY = generateRandomPosition(tileCount).newRandom;
     score = 0;
     snakePositions = [];
     snakeLength = 1;
-}
-function handleInput() {
+};
+//listens to a global event
+const handleInput = () => {
     document.addEventListener("keydown", (event) => {
         if (event.key === "ArrowUp" && direction !== "down") {
             nextDirection = "up";
@@ -98,6 +102,6 @@ function handleInput() {
             nextDirection = "right";
         }
     });
-}
+};
 drawGame();
 //# sourceMappingURL=app.js.map
