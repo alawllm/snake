@@ -5,11 +5,7 @@ import {
   setScoreOnScreen,
 } from "./render.js";
 
-import {
-  generateRandomPosition,
-  enableNewGameOnClick,
-  increaseByOne,
-} from "./game.js";
+import { generateRandomPosition, enableNewGameOnClick } from "./game.js";
 
 import {
   checkSnakeCollision,
@@ -19,6 +15,7 @@ import {
   drawSnake,
   updateHeadPosition,
 } from "./snake.js";
+
 //canvas or dom elements
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -38,8 +35,8 @@ let direction: string;
 let nextDirection: any;
 //this function returns an object with properties newAppleX, newAppleY
 //these properties can be accessed using the dot syntax
-let appleX = generateRandomPosition(tileCount).newRandom;
-let appleY = generateRandomPosition(tileCount).newRandom;
+let appleX = generateRandomPosition(tileCount);
+let appleY = generateRandomPosition(tileCount);
 let score = 0;
 
 let snakePositions: { x: number; y: number }[] = [];
@@ -70,7 +67,21 @@ const drawGame = (): void => {
   renderSnake(isCollision);
   drawApple(ctx, appleX, appleY, tileCount, tileSize);
 
-  checkAppleCollision();
+  let isAppleCollision: boolean = checkAppleCollision(
+    appleX,
+    appleY,
+    headX,
+    headY
+  );
+  if (isAppleCollision) {
+    let appleXY = generateApplePosition();
+    appleX = appleXY.appleX;
+    appleY = appleXY.appleY;
+    let lengthScore = updateSnakeLengthAndScore(snakeLength, score);
+    snakeLength = lengthScore.snakeLength;
+    score = lengthScore.score;
+  }
+  setScoreOnScreen(score, scoreContainer);
   //setting direction to next direction, to avoid opposite moves
   direction = nextDirection;
   if (!isCollision) {
@@ -85,31 +96,47 @@ const renderSnake = (isCollision: boolean): void => {
   if (!isCollision) addNewHeadPosition(snakePositions, headX, headY);
   drawSnake(ctx, snakePositions, tileCount, tileSize);
   if (!isCollision) {
-    headX = updateHeadPosition(
+    let { newHeadX, newHeadY } = updateHeadPosition(
       headChange,
       nextDirection,
       headX,
       headY
-    ).newHeadX;
-    headY = updateHeadPosition(
-      headChange,
-      nextDirection,
-      headX,
-      headY
-    ).newHeadY;
+    );
+    headX = newHeadX;
+    headY = newHeadY;
     shortenSnake(snakePositions, snakeLength);
   }
 };
 //modifies global variables
-const checkAppleCollision = (): void => {
+const checkAppleCollision = (
+  appleX: number,
+  appleY: number,
+  headX: number,
+  headY: number
+): boolean => {
   if (appleX === headX && appleY === headY) {
-    appleX = generateRandomPosition(tileCount).newRandom;
-    appleY = generateRandomPosition(tileCount).newRandom;
-    snakeLength = increaseByOne(snakeLength).num;
-    score = increaseByOne(score).num;
+    return true;
   }
-  setScoreOnScreen(score, scoreContainer);
+  return false;
 };
+
+const generateApplePosition = (): { appleX: number; appleY: number } => {
+  appleX = generateRandomPosition(tileCount);
+  appleY = generateRandomPosition(tileCount);
+  return { appleX, appleY };
+};
+
+const updateSnakeLengthAndScore = (
+  snakeLength: number,
+  score: number
+): { snakeLength: number; score: number } => {
+  snakeLength++;
+  score++;
+  return { snakeLength, score };
+};
+
+// setScoreOnScreen(score, scoreContainer);
+
 //calls other functions that modify global variables
 const startNewGame = (): void => {
   console.log("start new game!");
@@ -118,29 +145,47 @@ const startNewGame = (): void => {
   drawGame();
 };
 //not pure - modifies global variables
+//make a dictionary, returns fresh game state
 const resetGameState = (): void => {
   headX = 10;
   headY = 10;
   nextDirection = undefined;
-  appleX = generateRandomPosition(tileCount).newRandom;
-  appleY = generateRandomPosition(tileCount).newRandom;
+  appleX = generateRandomPosition(tileCount);
+  appleY = generateRandomPosition(tileCount);
   score = 0;
   snakePositions = [];
   snakeLength = 1;
+  //return dictionary
 };
 //listens to a global event
 const handleInput = (): void => {
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowUp" && direction !== "down") {
-      nextDirection = "up";
-    } else if (event.key === "ArrowDown" && direction !== "up") {
-      nextDirection = "down";
-    } else if (event.key === "ArrowLeft" && direction !== "right") {
-      nextDirection = "left";
-    } else if (event.key === "ArrowRight" && direction !== "left") {
-      nextDirection = "right";
-    }
-  });
+  //adding arguments to the callback function?
+  document.addEventListener("keydown", arrowInputHandler);
 };
 
+const arrowInputHandler = (event: KeyboardEvent) => {
+  if (event.key === "ArrowUp" && direction !== "down") {
+    nextDirection = "up";
+  } else if (event.key === "ArrowDown" && direction !== "up") {
+    nextDirection = "down";
+  } else if (event.key === "ArrowLeft" && direction !== "right") {
+    nextDirection = "left";
+  } else if (event.key === "ArrowRight" && direction !== "left") {
+    nextDirection = "right";
+  }
+};
 drawGame();
+
+/*
+playgame(){
+  handleInput()
+  while(true){
+    drawEverything()
+    handleGameStateChanges()
+    if (gameover){
+      handleGameOver()
+    }
+    setTimeout(...)
+  }
+}
+*/

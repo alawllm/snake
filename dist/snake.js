@@ -6,6 +6,7 @@ export const shortenSnake = (snakePositions, snakeLength) => {
 export const addNewHeadPosition = (snakePositions, headX, headY) => {
     snakePositions.unshift({ x: headX, y: headY });
 };
+//render?
 export const drawSnake = (ctx, snakePositions, tileCount, tileSize) => {
     ctx.fillStyle = "green";
     for (let i = 0; i < snakePositions.length; i++) {

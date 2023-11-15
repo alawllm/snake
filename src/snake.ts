@@ -21,7 +21,7 @@ export const addNewHeadPosition = (
 ): void => {
   snakePositions.unshift({ x: headX, y: headY });
 };
-
+//render?
 export const drawSnake = (
   ctx: CanvasRenderingContext2D,
   snakePositions: SnakePositionsArray,

@@ -1,7 +1,7 @@
 export const generateRandomPosition = (tileCount: number) => {
   const newRandom = Math.floor(Math.random() * tileCount);
 
-  return { newRandom };
+  return newRandom;
 };
 
 type StartNewGameFunction = () => void;
@@ -11,9 +11,4 @@ export const enableNewGameOnClick = (
   startNewGame: StartNewGameFunction
 ): void => {
   newGameButton.addEventListener("click", startNewGame);
-};
-
-export const increaseByOne = (num: number): { num: number } => {
-  num++;
-  return { num };
 };
