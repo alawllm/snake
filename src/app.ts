@@ -15,30 +15,27 @@ import {
   drawSnake,
   updateHeadPosition,
 } from "./snake.js";
-
+//canvas or dom elements
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-
 const scoreContainer = <HTMLElement>document.getElementById("score-container");
-
 const newGameButton = <HTMLButtonElement>document.getElementById("new-button");
-//settings of the canvas
-//tiles counted from 0 to 19
-let tileCount = 20;
-let tileSize = 16;
 
-//starting position of the snake
+//settings of the canvas
+const tileCount = 20;
+const tileSize = 16;
+
+//State
 let headX = 10;
 let headY = 10;
-
 //using direction to make sure no opposite moves
 let direction: string;
 //using nextDirection to decide the movements from the dictionary
 let nextDirection: any;
-
-let appleX = Math.floor(Math.random() * tileCount);
-let appleY = Math.floor(Math.random() * tileCount);
-
+//this function returns an object with properties newAppleX, newAppleY
+//these properties can be accessed using the dot syntax
+let appleX = generateRandomApplePosition(tileCount).newAppleX;
+let appleY = generateRandomApplePosition(tileCount).newAppleY;
 let score = 0;
 
 type SnakePositionsObject = {
@@ -65,7 +62,7 @@ const headChange: HeadChangeObject = {
   right: { x: 1, y: 0 },
 };
 
-function drawGame(): void {
+const drawGame = (): void => {
   renderGameScreen(ctx, canvas);
   handleInput();
 
@@ -85,9 +82,9 @@ function drawGame(): void {
     enableNewGameOnClick(newGameButton, startNewGame);
     drawGameOver(ctx, canvas);
   }
-}
+};
 
-function renderSnake(isCollision: boolean): void {
+const renderSnake = (isCollision: boolean): void => {
   if (!isCollision) addNewHeadPosition(snakePositions, headX, headY);
   drawSnake(ctx, snakePositions, tileCount, tileSize);
   if (!isCollision) {
@@ -101,27 +98,26 @@ function renderSnake(isCollision: boolean): void {
     headY = newHeadY;
     shortenSnake(snakePositions, snakeLength);
   }
-}
+};
 
-function checkAppleCollision(): void {
+const checkAppleCollision = (): void => {
   if (appleX === headX && appleY === headY) {
-    const { newAppleX, newAppleY } = generateRandomApplePosition(tileCount);
-    appleX = newAppleX;
-    appleY = newAppleY;
+    appleX = generateRandomApplePosition(tileCount).newAppleX;
+    appleY = generateRandomApplePosition(tileCount).newAppleY;
     snakeLength++;
     score++;
   }
   setScoreOnScreen(score, scoreContainer);
-}
+};
 
-function startNewGame(): void {
+const startNewGame = (): void => {
   console.log("start new game!");
   newGameButton.removeEventListener("click", startNewGame);
   resetGameState();
   drawGame();
-}
+};
 
-function resetGameState(): void {
+const resetGameState = (): void => {
   headX = 10;
   headY = 10;
   nextDirection = undefined;
@@ -130,9 +126,9 @@ function resetGameState(): void {
   score = 0;
   snakePositions = [];
   snakeLength = 1;
-}
+};
 
-function handleInput(): void {
+const handleInput = (): void => {
   document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp" && direction !== "down") {
       nextDirection = "up";
@@ -144,6 +140,6 @@ function handleInput(): void {
       nextDirection = "right";
     }
   });
-}
+};
 
 drawGame();

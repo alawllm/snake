@@ -1,23 +1,25 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
 import { generateRandomApplePosition, enableNewGameOnClick } from "./game.js";
 import { checkSnakeCollision, checkSnakeWithBoardCollision, shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, } from "./snake.js";
+//canvas or dom elements
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const scoreContainer = document.getElementById("score-container");
 const newGameButton = document.getElementById("new-button");
 //settings of the canvas
-//tiles counted from 0 to 19
-let tileCount = 20;
-let tileSize = 16;
-//starting position of the snake
+const tileCount = 20;
+const tileSize = 16;
+//State
 let headX = 10;
 let headY = 10;
 //using direction to make sure no opposite moves
 let direction;
 //using nextDirection to decide the movements from the dictionary
 let nextDirection;
-let appleX = Math.floor(Math.random() * tileCount);
-let appleY = Math.floor(Math.random() * tileCount);
+//this function returns an object with properties newAppleX, newAppleY
+//these properties can be accessed using the dot syntax
+let appleX = generateRandomApplePosition(tileCount).newAppleX;
+let appleY = generateRandomApplePosition(tileCount).newAppleY;
 let score = 0;
 let snakePositions = [];
 let snakeLength = 1;
@@ -56,25 +58,10 @@ function renderSnake(isCollision) {
         shortenSnake(snakePositions, snakeLength);
     }
 }
-// function updateHeadPosition(
-//   headChange: HeadChangeObject,
-//   nextDirection: string,
-//   headX: number,
-//   headY: number
-// ): void {
-//   const tempNextDirection = headChange[nextDirection as keyof HeadChangeObject];
-//   //making sure that next direction is not undefined as it is at the beginning
-//   if (nextDirection in headChange) {
-//     headX += tempNextDirection.x;
-//     headY += tempNextDirection.y;
-//   }
-//   console.log([...snakePositions]);
-// }
 function checkAppleCollision() {
     if (appleX === headX && appleY === headY) {
-        const { newAppleX, newAppleY } = generateRandomApplePosition(tileCount);
-        appleX = newAppleX;
-        appleY = newAppleY;
+        appleX = generateRandomApplePosition(tileCount).newAppleX;
+        appleY = generateRandomApplePosition(tileCount).newAppleY;
         snakeLength++;
         score++;
     }
