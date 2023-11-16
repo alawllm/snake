@@ -31,18 +31,20 @@ export const resetGameState = () => {
         tileSize: 16,
     };
 };
-export const arrowInputHandler = (event, direction, nextDirection) => {
+export const arrowInputHandler = (event, direction) => {
+    let nextDirection;
     if (event.key === "ArrowUp" && direction !== "down") {
-        return (nextDirection = "up");
+        nextDirection = "up";
     }
     else if (event.key === "ArrowDown" && direction !== "up") {
-        return (nextDirection = "down");
+        nextDirection = "down";
     }
     else if (event.key === "ArrowLeft" && direction !== "right") {
-        return (nextDirection = "left");
+        nextDirection = "left";
     }
     else if (event.key === "ArrowRight" && direction !== "left") {
-        return (nextDirection = "right");
+        nextDirection = "right";
     }
+    return nextDirection;
 };
 //# sourceMappingURL=game.js.map

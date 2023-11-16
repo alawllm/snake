@@ -27,7 +27,7 @@ const headChange = {
 };
 const drawGame = () => {
     renderGameScreen(ctx, canvas);
-    handleInput();
+    //handleInput();
     let isCollision = checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
         checkSnakeCollision(state.snakePositions, state.headX, state.headY);
     renderSnake(isCollision);
@@ -40,6 +40,7 @@ const drawGame = () => {
         let { newSnakeLength, newScore } = updateSnakeLengthAndScore(state.snakeLength, state.score);
         state.snakeLength = newSnakeLength;
         state.score = newScore;
+        console.log("apple collision!");
     }
     setScoreOnScreen(state.score, scoreContainer);
     //setting direction to next direction, to avoid opposite moves
@@ -73,8 +74,12 @@ const startNewGame = () => {
 };
 const handleInput = () => {
     //adding arguments to the callback function?
-    document.addEventListener("keydown", (event) => (state.nextDirection = arrowInputHandler(event, state.direction, state.nextDirection)));
+    document.addEventListener("keydown", (event) => {
+        let nextDirection = arrowInputHandler(event, state.direction);
+        state.nextDirection = nextDirection;
+    });
 };
+handleInput();
 drawGame();
 /*
 playgame(){

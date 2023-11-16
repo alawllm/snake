@@ -63,18 +63,16 @@ export const resetGameState = (): StateObject => {
   };
 };
 
-export const arrowInputHandler = (
-  event: KeyboardEvent,
-  direction: string,
-  nextDirection: any
-) => {
+export const arrowInputHandler = (event: KeyboardEvent, direction: string) => {
+  let nextDirection;
   if (event.key === "ArrowUp" && direction !== "down") {
-    return (nextDirection = "up");
+    nextDirection = "up";
   } else if (event.key === "ArrowDown" && direction !== "up") {
-    return (nextDirection = "down");
+    nextDirection = "down";
   } else if (event.key === "ArrowLeft" && direction !== "right") {
-    return (nextDirection = "left");
+    nextDirection = "left";
   } else if (event.key === "ArrowRight" && direction !== "left") {
-    return (nextDirection = "right");
+    nextDirection = "right";
   }
+  return nextDirection;
 };
