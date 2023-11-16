@@ -89,3 +89,12 @@ export const checkSnakeWithBoardCollision = (
   }
   return false;
 };
+
+export const updateSnakeLengthAndScore = (
+  snakeLength: number,
+  score: number
+): { newSnakeLength: number; newScore: number } => {
+  let newSnakeLength = snakeLength++;
+  let newScore = score++;
+  return { newSnakeLength, newScore };
+};

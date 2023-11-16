@@ -1,5 +1,5 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
-import { generateRandomPosition, enableNewGameOnClick } from "./game.js";
+import { generateRandomPosition, enableNewGameOnClick, generateApplePosition, } from "./game.js";
 import { checkSnakeCollision, checkSnakeWithBoardCollision, shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, } from "./snake.js";
 //canvas or dom elements
 const canvas = document.getElementById("game");
@@ -38,9 +38,9 @@ const drawGame = () => {
     drawApple(ctx, appleX, appleY, tileCount, tileSize);
     let isAppleCollision = checkAppleCollision(appleX, appleY, headX, headY);
     if (isAppleCollision) {
-        let appleXY = generateApplePosition();
-        appleX = appleXY.appleX;
-        appleY = appleXY.appleY;
+        let { newAppleX, newAppleY } = generateApplePosition(tileCount);
+        appleX = newAppleX;
+        appleY = newAppleY;
         let lengthScore = updateSnakeLengthAndScore(snakeLength, score);
         snakeLength = lengthScore.snakeLength;
         score = lengthScore.score;
@@ -75,11 +75,6 @@ const checkAppleCollision = (appleX, appleY, headX, headY) => {
     }
     return false;
 };
-const generateApplePosition = () => {
-    appleX = generateRandomPosition(tileCount);
-    appleY = generateRandomPosition(tileCount);
-    return { appleX, appleY };
-};
 const updateSnakeLengthAndScore = (snakeLength, score) => {
     snakeLength++;
     score++;
@@ -94,6 +89,7 @@ const startNewGame = () => {
     drawGame();
 };
 //not pure - modifies global variables
+//make a dictionary, returns fresh game state
 const resetGameState = () => {
     headX = 10;
     headY = 10;
@@ -103,23 +99,39 @@ const resetGameState = () => {
     score = 0;
     snakePositions = [];
     snakeLength = 1;
+    //return dictionary
 };
 //listens to a global event
 const handleInput = () => {
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowUp" && direction !== "down") {
-            nextDirection = "up";
-        }
-        else if (event.key === "ArrowDown" && direction !== "up") {
-            nextDirection = "down";
-        }
-        else if (event.key === "ArrowLeft" && direction !== "right") {
-            nextDirection = "left";
-        }
-        else if (event.key === "ArrowRight" && direction !== "left") {
-            nextDirection = "right";
-        }
-    });
+    //adding arguments to the callback function?
+    document.addEventListener("keydown", arrowInputHandler);
+};
+const arrowInputHandler = (event) => {
+    if (event.key === "ArrowUp" && direction !== "down") {
+        nextDirection = "up";
+    }
+    else if (event.key === "ArrowDown" && direction !== "up") {
+        nextDirection = "down";
+    }
+    else if (event.key === "ArrowLeft" && direction !== "right") {
+        nextDirection = "left";
+    }
+    else if (event.key === "ArrowRight" && direction !== "left") {
+        nextDirection = "right";
+    }
 };
 drawGame();
+/*
+playgame(){
+  handleInput()
+  while(true){
+    drawEverything()
+    handleGameStateChanges()
+    if (gameover){
+      handleGameOver()
+    }
+    setTimeout(...)
+  }
+}
+*/
 //# sourceMappingURL=app.js.map
