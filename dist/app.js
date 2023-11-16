@@ -1,5 +1,5 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
-import { enableNewGameOnClick, generateApplePosition, checkAppleCollision, resetGameState, } from "./game.js";
+import { enableNewGameOnClick, generateApplePosition, checkAppleCollision, resetGameState, arrowInputHandler, } from "./game.js";
 import { checkSnakeCollision, checkSnakeWithBoardCollision, shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, updateSnakeLengthAndScore, } from "./snake.js";
 //canvas or dom elements
 const canvas = document.getElementById("game");
@@ -38,8 +38,6 @@ const drawGame = () => {
         state.appleX = newAppleX;
         state.appleY = newAppleY;
         let { newSnakeLength, newScore } = updateSnakeLengthAndScore(state.snakeLength, state.score);
-        console.log(newSnakeLength, newScore);
-        console.log(state.snakeLength, state.score);
         state.snakeLength = newSnakeLength;
         state.score = newScore;
     }
@@ -75,21 +73,7 @@ const startNewGame = () => {
 };
 const handleInput = () => {
     //adding arguments to the callback function?
-    document.addEventListener("keydown", arrowInputHandler);
-};
-const arrowInputHandler = (event) => {
-    if (event.key === "ArrowUp" && state.direction !== "down") {
-        state.nextDirection = "up";
-    }
-    else if (event.key === "ArrowDown" && state.direction !== "up") {
-        state.nextDirection = "down";
-    }
-    else if (event.key === "ArrowLeft" && state.direction !== "right") {
-        state.nextDirection = "left";
-    }
-    else if (event.key === "ArrowRight" && state.direction !== "left") {
-        state.nextDirection = "right";
-    }
+    document.addEventListener("keydown", (event) => (state.nextDirection = arrowInputHandler(event, state.direction, state.nextDirection)));
 };
 drawGame();
 /*

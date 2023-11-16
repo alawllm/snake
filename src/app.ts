@@ -10,6 +10,7 @@ import {
   generateApplePosition,
   checkAppleCollision,
   resetGameState,
+  arrowInputHandler,
 } from "./game.js";
 
 import {
@@ -95,8 +96,6 @@ const drawGame = (): void => {
       state.snakeLength,
       state.score
     );
-    console.log(newSnakeLength, newScore);
-    console.log(state.snakeLength, state.score);
     state.snakeLength = newSnakeLength;
     state.score = newScore;
   }
@@ -138,20 +137,17 @@ const startNewGame = (): void => {
 
 const handleInput = (): void => {
   //adding arguments to the callback function?
-  document.addEventListener("keydown", arrowInputHandler);
+  document.addEventListener(
+    "keydown",
+    (event) =>
+      (state.nextDirection = arrowInputHandler(
+        event,
+        state.direction,
+        state.nextDirection
+      ))
+  );
 };
 
-const arrowInputHandler = (event: KeyboardEvent) => {
-  if (event.key === "ArrowUp" && state.direction !== "down") {
-    state.nextDirection = "up";
-  } else if (event.key === "ArrowDown" && state.direction !== "up") {
-    state.nextDirection = "down";
-  } else if (event.key === "ArrowLeft" && state.direction !== "right") {
-    state.nextDirection = "left";
-  } else if (event.key === "ArrowRight" && state.direction !== "left") {
-    state.nextDirection = "right";
-  }
-};
 drawGame();
 
 /*

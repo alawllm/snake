@@ -62,3 +62,19 @@ export const resetGameState = (): StateObject => {
     tileSize: 16,
   };
 };
+
+export const arrowInputHandler = (
+  event: KeyboardEvent,
+  direction: string,
+  nextDirection: any
+) => {
+  if (event.key === "ArrowUp" && direction !== "down") {
+    return (nextDirection = "up");
+  } else if (event.key === "ArrowDown" && direction !== "up") {
+    return (nextDirection = "down");
+  } else if (event.key === "ArrowLeft" && direction !== "right") {
+    return (nextDirection = "left");
+  } else if (event.key === "ArrowRight" && direction !== "left") {
+    return (nextDirection = "right");
+  }
+};

@@ -31,4 +31,18 @@ export const resetGameState = () => {
         tileSize: 16,
     };
 };
+export const arrowInputHandler = (event, direction, nextDirection) => {
+    if (event.key === "ArrowUp" && direction !== "down") {
+        return (nextDirection = "up");
+    }
+    else if (event.key === "ArrowDown" && direction !== "up") {
+        return (nextDirection = "down");
+    }
+    else if (event.key === "ArrowLeft" && direction !== "right") {
+        return (nextDirection = "left");
+    }
+    else if (event.key === "ArrowRight" && direction !== "left") {
+        return (nextDirection = "right");
+    }
+};
 //# sourceMappingURL=game.js.map
