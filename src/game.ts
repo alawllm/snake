@@ -32,3 +32,33 @@ export const enableNewGameOnClick = (
 ): void => {
   newGameButton.addEventListener("click", startNewGame);
 };
+
+type StateObject = {
+  appleX: number;
+  appleY: number;
+  direction: string;
+  nextDirection: any;
+  headX: number;
+  headY: number;
+  score: number;
+  snakeLength: number;
+  snakePositions: { x: number; y: number }[];
+  tileCount: number;
+  tileSize: number;
+};
+
+export const resetGameState = (): StateObject => {
+  return {
+    appleX: 15,
+    appleY: 18,
+    direction: "",
+    nextDirection: "",
+    headX: 10,
+    headY: 10,
+    score: 0,
+    snakeLength: 1,
+    snakePositions: [],
+    tileCount: 20,
+    tileSize: 16,
+  };
+};

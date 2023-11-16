@@ -49,7 +49,7 @@ type HeadChangeObject = {
 
 export const updateHeadPosition = (
   headChange: HeadChangeObject,
-  nextDirection: string,
+  nextDirection: any,
   headX: number,
   headY: number
 ): { newHeadX: number; newHeadY: number } => {
@@ -94,7 +94,10 @@ export const updateSnakeLengthAndScore = (
   snakeLength: number,
   score: number
 ): { newSnakeLength: number; newScore: number } => {
-  let newSnakeLength = snakeLength++;
-  let newScore = score++;
+  console.log("updateSnakeLengthAndScore1", snakeLength, score);
+
+  let newSnakeLength = snakeLength + 1;
+  let newScore = score + 1;
+  console.log("updateSnakeLengthAndScore2", newSnakeLength, newScore);
   return { newSnakeLength, newScore };
 };

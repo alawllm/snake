@@ -38,4 +38,11 @@ export const checkSnakeWithBoardCollision = (headX, headY, tileCount) => {
     }
     return false;
 };
+export const updateSnakeLengthAndScore = (snakeLength, score) => {
+    console.log("updateSnakeLengthAndScore1", snakeLength, score);
+    let newSnakeLength = snakeLength + 1;
+    let newScore = score + 1;
+    console.log("updateSnakeLengthAndScore2", newSnakeLength, newScore);
+    return { newSnakeLength, newScore };
+};
 //# sourceMappingURL=snake.js.map
