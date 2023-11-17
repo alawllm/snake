@@ -13,7 +13,13 @@ export const drawSnake = (ctx, snakePositions, tileCount, tileSize) => {
         ctx.fillRect(snakePositions[i].x * tileCount, snakePositions[i].y * tileCount, tileSize, tileSize);
     }
 };
-export const updateHeadPosition = (headChange, nextDirection, headX, headY) => {
+export const updateHeadPosition = (nextDirection, headX, headY) => {
+    const headChange = {
+        up: { x: 0, y: -1 },
+        down: { x: 0, y: 1 },
+        left: { x: -1, y: 0 },
+        right: { x: 1, y: 0 },
+    };
     const tempNextDirection = headChange[nextDirection];
     let newHeadX = headX;
     let newHeadY = headY;

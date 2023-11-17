@@ -23,25 +23,13 @@ import {
   updateSnakeLengthAndScore,
 } from "./snake.js";
 
+import { StateObject } from "./types.js";
+
 //canvas or dom elements
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 const scoreContainer = <HTMLElement>document.getElementById("score-container");
 const newGameButton = <HTMLButtonElement>document.getElementById("new-button");
-
-type StateObject = {
-  appleX: number;
-  appleY: number;
-  direction: string;
-  nextDirection: any;
-  headX: number;
-  headY: number;
-  score: number;
-  snakeLength: number;
-  snakePositions: { x: number; y: number }[];
-  tileCount: number;
-  tileSize: number;
-};
 
 let state: StateObject = {
   appleX: 15,
@@ -57,24 +45,8 @@ let state: StateObject = {
   tileSize: 16,
 };
 
-type HeadChangeObject = {
-  up: { x: number; y: number };
-  down: { x: number; y: number };
-  left: { x: number; y: number };
-  right: { x: number; y: number };
-};
-
-const headChange: HeadChangeObject = {
-  up: { x: 0, y: -1 },
-  down: { x: 0, y: 1 },
-  left: { x: -1, y: 0 },
-  right: { x: 1, y: 0 },
-};
-
 const drawGame = (): void => {
   renderGameScreen(ctx, canvas);
-  //handleInput();
-
   let isCollision: boolean =
     checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
     checkSnakeCollision(state.snakePositions, state.headX, state.headY);
@@ -110,14 +82,12 @@ const drawGame = (): void => {
     drawGameOver(ctx, canvas);
   }
 };
-//modifies global variables
 const renderSnake = (isCollision: boolean): void => {
   if (!isCollision)
     addNewHeadPosition(state.snakePositions, state.headX, state.headY);
   drawSnake(ctx, state.snakePositions, state.tileCount, state.tileSize);
   if (!isCollision) {
     let { newHeadX, newHeadY } = updateHeadPosition(
-      headChange,
       state.nextDirection,
       state.headX,
       state.headY
@@ -140,12 +110,14 @@ const handleInput = (): void => {
   //adding arguments to the callback function?
   document.addEventListener("keydown", (event) => {
     let nextDirection = arrowInputHandler(event, state.direction);
+    console.log(nextDirection);
     state.nextDirection = nextDirection;
+    console.log(state.nextDirection);
   });
 };
 
-handleInput();
 drawGame();
+handleInput();
 
 /*
 playgame(){

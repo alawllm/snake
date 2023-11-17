@@ -19,15 +19,8 @@ let state = {
     tileCount: 20,
     tileSize: 16,
 };
-const headChange = {
-    up: { x: 0, y: -1 },
-    down: { x: 0, y: 1 },
-    left: { x: -1, y: 0 },
-    right: { x: 1, y: 0 },
-};
 const drawGame = () => {
     renderGameScreen(ctx, canvas);
-    //handleInput();
     let isCollision = checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
         checkSnakeCollision(state.snakePositions, state.headX, state.headY);
     renderSnake(isCollision);
@@ -53,13 +46,12 @@ const drawGame = () => {
         drawGameOver(ctx, canvas);
     }
 };
-//modifies global variables
 const renderSnake = (isCollision) => {
     if (!isCollision)
         addNewHeadPosition(state.snakePositions, state.headX, state.headY);
     drawSnake(ctx, state.snakePositions, state.tileCount, state.tileSize);
     if (!isCollision) {
-        let { newHeadX, newHeadY } = updateHeadPosition(headChange, state.nextDirection, state.headX, state.headY);
+        let { newHeadX, newHeadY } = updateHeadPosition(state.nextDirection, state.headX, state.headY);
         state.headX = newHeadX;
         state.headY = newHeadY;
         shortenSnake(state.snakePositions, state.snakeLength);
@@ -76,11 +68,13 @@ const handleInput = () => {
     //adding arguments to the callback function?
     document.addEventListener("keydown", (event) => {
         let nextDirection = arrowInputHandler(event, state.direction);
+        console.log(nextDirection);
         state.nextDirection = nextDirection;
+        console.log(state.nextDirection);
     });
 };
-handleInput();
 drawGame();
+handleInput();
 /*
 playgame(){
   handleInput()

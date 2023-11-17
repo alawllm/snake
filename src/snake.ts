@@ -1,12 +1,7 @@
-type SnakePositionsObject = {
-  x: number;
-  y: number;
-};
-
-type SnakePositionsArray = SnakePositionsObject[];
+import { HeadChangeObject } from "./types";
 
 export const shortenSnake = (
-  snakePositions: SnakePositionsArray,
+  snakePositions: { x: number; y: number }[],
   snakeLength: number
 ): void => {
   if (snakePositions.length >= snakeLength) {
@@ -15,7 +10,7 @@ export const shortenSnake = (
 };
 
 export const addNewHeadPosition = (
-  snakePositions: SnakePositionsArray,
+  snakePositions: { x: number; y: number }[],
   headX: number,
   headY: number
 ): void => {
@@ -24,7 +19,7 @@ export const addNewHeadPosition = (
 //render?
 export const drawSnake = (
   ctx: CanvasRenderingContext2D,
-  snakePositions: SnakePositionsArray,
+  snakePositions: { x: number; y: number }[],
   tileCount: number,
   tileSize: number
 ): void => {
@@ -40,19 +35,17 @@ export const drawSnake = (
   }
 };
 
-type HeadChangeObject = {
-  up: { x: number; y: number };
-  down: { x: number; y: number };
-  left: { x: number; y: number };
-  right: { x: number; y: number };
-};
-
 export const updateHeadPosition = (
-  headChange: HeadChangeObject,
   nextDirection: any,
   headX: number,
   headY: number
 ): { newHeadX: number; newHeadY: number } => {
+  const headChange: HeadChangeObject = {
+    up: { x: 0, y: -1 },
+    down: { x: 0, y: 1 },
+    left: { x: -1, y: 0 },
+    right: { x: 1, y: 0 },
+  };
   const tempNextDirection = headChange[nextDirection as keyof HeadChangeObject];
   let newHeadX = headX;
   let newHeadY = headY;
@@ -65,7 +58,7 @@ export const updateHeadPosition = (
 };
 
 export const checkSnakeCollision = (
-  snakePositions: SnakePositionsArray,
+  snakePositions: { x: number; y: number }[],
   headX: number,
   headY: number
 ): boolean => {
