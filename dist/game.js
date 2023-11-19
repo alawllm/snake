@@ -7,12 +7,6 @@ export const generateApplePosition = (tileCount) => {
     let newAppleY = generateRandomPosition(tileCount);
     return { newAppleX, newAppleY };
 };
-export const checkAppleCollision = (appleX, appleY, headX, headY) => {
-    if (appleX === headX && appleY === headY) {
-        return true;
-    }
-    return false;
-};
 export const enableNewGameOnClick = (newGameButton, startNewGame) => {
     newGameButton.addEventListener("click", startNewGame);
 };
@@ -31,8 +25,7 @@ export const resetGameState = () => {
         tileSize: 16,
     };
 };
-export const arrowInputHandler = (event, direction) => {
-    let nextDirection;
+export const arrowInputHandler = (event, direction, nextDirection) => {
     if (event.key === "ArrowUp" && direction !== "down") {
         nextDirection = "up";
     }

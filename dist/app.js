@@ -1,6 +1,7 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
-import { enableNewGameOnClick, generateApplePosition, checkAppleCollision, resetGameState, arrowInputHandler, } from "./game.js";
-import { checkSnakeCollision, checkSnakeWithBoardCollision, shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, updateSnakeLengthAndScore, } from "./snake.js";
+import { enableNewGameOnClick, generateApplePosition, resetGameState, arrowInputHandler, } from "./game.js";
+import { shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, updateSnakeLengthAndScore, } from "./snake.js";
+import { checkSnakeCollision, checkSnakeWithBoardCollision, checkAppleCollision, } from "./collision.js";
 //canvas or dom elements
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -67,9 +68,8 @@ const startNewGame = () => {
 const handleInput = () => {
     //adding arguments to the callback function?
     document.addEventListener("keydown", (event) => {
-        let nextDirection = arrowInputHandler(event, state.direction);
-        console.log(nextDirection);
-        state.nextDirection = nextDirection;
+        state.nextDirection = arrowInputHandler(event, state.direction, state.nextDirection);
+        //just before collision with body, nextDirection is undefined
         console.log(state.nextDirection);
     });
 };

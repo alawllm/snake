@@ -1,3 +1,5 @@
+import { StateObject } from "./types";
+
 export const generateRandomPosition = (tileCount: number) => {
   const newRandom = Math.floor(Math.random() * tileCount);
 
@@ -12,18 +14,6 @@ export const generateApplePosition = (
   return { newAppleX, newAppleY };
 };
 
-export const checkAppleCollision = (
-  appleX: number,
-  appleY: number,
-  headX: number,
-  headY: number
-): boolean => {
-  if (appleX === headX && appleY === headY) {
-    return true;
-  }
-  return false;
-};
-
 type StartNewGameFunction = () => void;
 
 export const enableNewGameOnClick = (
@@ -31,20 +21,6 @@ export const enableNewGameOnClick = (
   startNewGame: StartNewGameFunction
 ): void => {
   newGameButton.addEventListener("click", startNewGame);
-};
-
-type StateObject = {
-  appleX: number;
-  appleY: number;
-  direction: string;
-  nextDirection: any;
-  headX: number;
-  headY: number;
-  score: number;
-  snakeLength: number;
-  snakePositions: { x: number; y: number }[];
-  tileCount: number;
-  tileSize: number;
 };
 
 export const resetGameState = (): StateObject => {
@@ -63,8 +39,11 @@ export const resetGameState = (): StateObject => {
   };
 };
 
-export const arrowInputHandler = (event: KeyboardEvent, direction: string) => {
-  let nextDirection;
+export const arrowInputHandler = (
+  event: KeyboardEvent,
+  direction: string,
+  nextDirection: string
+): string => {
   if (event.key === "ArrowUp" && direction !== "down") {
     nextDirection = "up";
   } else if (event.key === "ArrowDown" && direction !== "up") {

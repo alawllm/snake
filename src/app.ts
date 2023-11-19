@@ -8,20 +8,23 @@ import {
 import {
   enableNewGameOnClick,
   generateApplePosition,
-  checkAppleCollision,
   resetGameState,
   arrowInputHandler,
 } from "./game.js";
 
 import {
-  checkSnakeCollision,
-  checkSnakeWithBoardCollision,
   shortenSnake,
   addNewHeadPosition,
   drawSnake,
   updateHeadPosition,
   updateSnakeLengthAndScore,
 } from "./snake.js";
+
+import {
+  checkSnakeCollision,
+  checkSnakeWithBoardCollision,
+  checkAppleCollision,
+} from "./collision.js";
 
 import { StateObject } from "./types.js";
 
@@ -109,9 +112,12 @@ const startNewGame = (): void => {
 const handleInput = (): void => {
   //adding arguments to the callback function?
   document.addEventListener("keydown", (event) => {
-    let nextDirection = arrowInputHandler(event, state.direction);
-    console.log(nextDirection);
-    state.nextDirection = nextDirection;
+    state.nextDirection = arrowInputHandler(
+      event,
+      state.direction,
+      state.nextDirection
+    );
+    //just before collision with body, nextDirection is undefined
     console.log(state.nextDirection);
   });
 };

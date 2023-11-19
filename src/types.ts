@@ -2,7 +2,7 @@ export type StateObject = {
   appleX: number;
   appleY: number;
   direction: string;
-  nextDirection: any;
+  nextDirection: string | keyof HeadChangeObject;
   headX: number;
   headY: number;
   score: number;
