@@ -9,3 +9,7 @@ And in order to try out canvas in html.
 - CSS
 - HTML5
 - Jest
+
+## Useful Links
+
+- [How to configure Jest with TypeScript](https://medium.com/@jelena.durovic/how-to-configure-jest-with-typescript-fe034ad7d6c2)

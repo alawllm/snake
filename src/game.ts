@@ -22,7 +22,7 @@ export const startNewGame = (state: object, drawGame: DrawGame) => {
   drawGame();
 };
 
-export const enableNewGame = (
+export const newGameListener = (
   newGameButton: HTMLButtonElement,
   state: object,
   drawGame: DrawGame,

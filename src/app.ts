@@ -6,7 +6,7 @@ import {
 } from "./render.js";
 
 import {
-  enableNewGame,
+  newGameListener,
   generateApplePosition,
   startNewGame,
   handleInput,
@@ -103,7 +103,7 @@ const renderSnake = (isCollision: boolean): void => {
 
 drawGame();
 handleInput(state.nextDirection, state.direction);
-enableNewGame(newGameButton, state, drawGame, startNewGame);
+newGameListener(newGameButton, state, drawGame, startNewGame);
 
 /*
 playgame(){
