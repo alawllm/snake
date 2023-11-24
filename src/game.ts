@@ -14,13 +14,21 @@ export const generateApplePosition = (
   return { newAppleX, newAppleY };
 };
 
-type StartNewGameFunction = () => void;
+type DrawGame = () => void;
 
-export const enableNewGameOnClick = (
+export const startNewGame = (state: object, drawGame: DrawGame) => {
+  console.log("start new game!");
+  state = resetGameState();
+  drawGame();
+};
+
+export const enableNewGame = (
   newGameButton: HTMLButtonElement,
-  startNewGame: StartNewGameFunction
+  state: object,
+  drawGame: DrawGame,
+  startNewGame: (state: object, drawGame: DrawGame) => void
 ): void => {
-  newGameButton.addEventListener("click", startNewGame);
+  newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 
 export const resetGameState = (): StateObject => {
@@ -54,4 +62,12 @@ export const arrowInputHandler = (
     nextDirection = "right";
   }
   return nextDirection;
+};
+
+export const handleInput = (nextDirection: string, direction: string): void => {
+  //adding arguments to the callback function?
+  document.addEventListener("keydown", (event) => {
+    nextDirection = arrowInputHandler(event, direction, nextDirection);
+    console.log(nextDirection);
+  });
 };
