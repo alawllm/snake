@@ -7,8 +7,13 @@ export const generateApplePosition = (tileCount) => {
     let newAppleY = generateRandomPosition(tileCount);
     return { newAppleX, newAppleY };
 };
-export const enableNewGameOnClick = (newGameButton, startNewGame) => {
-    newGameButton.addEventListener("click", startNewGame);
+export const startNewGame = (state, drawGame) => {
+    console.log("start new game!");
+    state = resetGameState();
+    drawGame();
+};
+export const newGameListener = (newGameButton, state, drawGame, startNewGame) => {
+    newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 export const resetGameState = () => {
     return {
@@ -39,5 +44,12 @@ export const arrowInputHandler = (event, direction, nextDirection) => {
         nextDirection = "right";
     }
     return nextDirection;
+};
+export const handleInput = (nextDirection, direction) => {
+    //adding arguments to the callback function?
+    document.addEventListener("keydown", (event) => {
+        nextDirection = arrowInputHandler(event, direction, nextDirection);
+        console.log(nextDirection);
+    });
 };
 //# sourceMappingURL=game.js.map

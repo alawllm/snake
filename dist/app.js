@@ -1,5 +1,5 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
-import { enableNewGameOnClick, generateApplePosition, resetGameState, arrowInputHandler, } from "./game.js";
+import { newGameListener, generateApplePosition, startNewGame, handleInput, } from "./game.js";
 import { shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, updateSnakeLengthAndScore, } from "./snake.js";
 import { checkSnakeCollision, checkSnakeWithBoardCollision, checkAppleCollision, } from "./collision.js";
 //canvas or dom elements
@@ -43,7 +43,6 @@ const drawGame = () => {
         setTimeout(drawGame, 1000 / (state.score / 2 + 3.3));
     }
     else {
-        enableNewGameOnClick(newGameButton, startNewGame);
         drawGameOver(ctx, canvas);
     }
 };
@@ -58,26 +57,11 @@ const renderSnake = (isCollision) => {
         shortenSnake(state.snakePositions, state.snakeLength);
     }
 };
-//calls other functions that modify global variables
-const startNewGame = () => {
-    console.log("start new game!");
-    newGameButton.removeEventListener("click", startNewGame);
-    state = resetGameState();
-    drawGame();
-};
-const handleInput = () => {
-    //adding arguments to the callback function?
-    document.addEventListener("keydown", (event) => {
-        state.nextDirection = arrowInputHandler(event, state.direction, state.nextDirection);
-        //just before collision with body, nextDirection is undefined
-        console.log(state.nextDirection);
-    });
-};
 drawGame();
-handleInput();
+handleInput(state.nextDirection, state.direction);
+newGameListener(newGameButton, state, drawGame, startNewGame);
 /*
 playgame(){
-  handleInput()
   while(true){
     drawEverything()
     handleGameStateChanges()

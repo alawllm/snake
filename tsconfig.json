@@ -7,7 +7,9 @@
     "noUnusedLocals": true,
     "outDir": "./dist",
     "module": "es6",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
-  "include": ["./"]
+  "include": ["./"],
+  "exclude": ["./**/*.test.ts"]
 }
