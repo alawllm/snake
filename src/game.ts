@@ -15,24 +15,6 @@ export const generateApplePosition = (
   return { newAppleX, newAppleY };
 };
 
-type DrawGame = () => void;
-
-export const startNewGame = (state: object, drawGame: DrawGame) => {
-  console.log("start new game!");
-  state = resetGameState();
-  drawGame();
-};
-
-export const newGameListener = (
-  newGameButton: HTMLButtonElement,
-  state: object,
-  drawGame: DrawGame,
-  startNewGame: (state: object, drawGame: DrawGame) => void
-): void => {
-  console.log("hello from new game listener");
-  newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
-};
-
 export const resetGameState = (): TStateObject => {
   return {
     appleX: 15,
@@ -47,6 +29,15 @@ export const resetGameState = (): TStateObject => {
     tileCount: 20,
     tileSize: 16,
   };
+}; 
+export const newGameListener = (
+  newGameButton: HTMLButtonElement,
+  state: TStateObject,
+  drawGame: () => void,
+  startNewGame: (state: TStateObject, drawGame: () => void) => void
+): void => {
+  console.log("hello from new game listener");
+  newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 
 export const arrowInputHandler = (

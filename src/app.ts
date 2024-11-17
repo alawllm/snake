@@ -8,7 +8,7 @@ import {
 import {
   newGameListener,
   generateApplePosition,
-  startNewGame,
+  resetGameState,
   handleInput,
 } from "./game.js";
 
@@ -35,13 +35,13 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 const scoreContainer = <HTMLElement>document.getElementById("score-container");
 const newGameButton = <HTMLButtonElement>document.getElementById("new-button");
 
-let state: TStateObject = initialGameState
+const state: TStateObject = initialGameState;
 
 const drawGame = (): void => {
   renderGameScreen(ctx, canvas);
   let isCollision: boolean =
-  checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
-  checkSnakeCollision(state.snakePositions, state.headX, state.headY);
+    checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
+    checkSnakeCollision(state.snakePositions, state.headX, state.headY);
   renderSnake(isCollision);
   drawApple(ctx, state.appleX, state.appleY, state.tileCount, state.tileSize);
 
@@ -74,7 +74,7 @@ const drawGame = (): void => {
 
 const renderSnake = (isCollision: boolean): void => {
   if (!isCollision)
-  addNewHeadPosition(state.snakePositions, state.headX, state.headY);
+    addNewHeadPosition(state.snakePositions, state.headX, state.headY);
   drawSnake(ctx, state.snakePositions, state.tileCount, state.tileSize);
   if (!isCollision) {
     let { newHeadX, newHeadY } = updateHeadPosition(
@@ -88,19 +88,12 @@ const renderSnake = (isCollision: boolean): void => {
   }
 };
 
+const startNewGame = (state: TStateObject, drawGame: () => void) => {
+  console.log("start new game!");
+  Object.assign(state, resetGameState());
+  drawGame();
+};
+
 drawGame();
 handleInput(state);
 newGameListener(newGameButton, state, drawGame, startNewGame);
-
-/*
-playgame(){
-  while(true){
-    drawEverything()
-    handleGameStateChanges()
-    if (gameover){
-      handleGameOver()
-    }
-    setTimeout(...)
-  }
-}
-*/

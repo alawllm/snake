@@ -7,15 +7,6 @@ export const generateApplePosition = (tileCount) => {
     let newAppleY = generateRandomPosition(tileCount);
     return { newAppleX, newAppleY };
 };
-export const startNewGame = (state, drawGame) => {
-    console.log("start new game!");
-    state = resetGameState();
-    drawGame();
-};
-export const newGameListener = (newGameButton, state, drawGame, startNewGame) => {
-    console.log("hello from new game listener");
-    newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
-};
 export const resetGameState = () => {
     return {
         appleX: 15,
@@ -30,6 +21,10 @@ export const resetGameState = () => {
         tileCount: 20,
         tileSize: 16,
     };
+};
+export const newGameListener = (newGameButton, state, drawGame, startNewGame) => {
+    console.log("hello from new game listener");
+    newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 export const arrowInputHandler = (event, direction, nextDirection) => {
     if (event.key === "ArrowUp" && direction !== "down") {

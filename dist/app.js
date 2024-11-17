@@ -1,5 +1,5 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
-import { newGameListener, generateApplePosition, startNewGame, handleInput, } from "./game.js";
+import { newGameListener, generateApplePosition, resetGameState, handleInput, } from "./game.js";
 import { shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, updateSnakeLengthAndScore, } from "./snake.js";
 import { checkSnakeCollision, checkSnakeWithBoardCollision, checkAppleCollision, } from "./collision.js";
 import { initialGameState } from "./utils/config.js";
@@ -8,7 +8,7 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const scoreContainer = document.getElementById("score-container");
 const newGameButton = document.getElementById("new-button");
-let state = initialGameState;
+const state = initialGameState;
 const drawGame = () => {
     renderGameScreen(ctx, canvas);
     let isCollision = checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
@@ -45,19 +45,12 @@ const renderSnake = (isCollision) => {
         shortenSnake(state.snakePositions, state.snakeLength);
     }
 };
+const startNewGame = (state, drawGame) => {
+    console.log("start new game!");
+    Object.assign(state, resetGameState());
+    drawGame();
+};
 drawGame();
 handleInput(state);
 newGameListener(newGameButton, state, drawGame, startNewGame);
-/*
-playgame(){
-  while(true){
-    drawEverything()
-    handleGameStateChanges()
-    if (gameover){
-      handleGameOver()
-    }
-    setTimeout(...)
-  }
-}
-*/
 //# sourceMappingURL=app.js.map
