@@ -27,6 +27,7 @@ import {
 } from "./collision.js";
 
 import { TStateObject } from "./utils/types.js";
+import { initialGameState } from "./utils/config.js";
 
 //canvas or dom elements
 const canvas = document.getElementById("game") as HTMLCanvasElement;
@@ -34,25 +35,13 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 const scoreContainer = <HTMLElement>document.getElementById("score-container");
 const newGameButton = <HTMLButtonElement>document.getElementById("new-button");
 
-let state: TStateObject = {
-  appleX: 15,
-  appleY: 10,
-  direction: "",
-  nextDirection: "",
-  headX: 10,
-  headY: 10,
-  score: 0,
-  snakeLength: 1,
-  snakePositions: [],
-  tileCount: 20,
-  tileSize: 16,
-};
+let state: TStateObject = initialGameState
 
 const drawGame = (): void => {
   renderGameScreen(ctx, canvas);
   let isCollision: boolean =
-    checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
-    checkSnakeCollision(state.snakePositions, state.headX, state.headY);
+  checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
+  checkSnakeCollision(state.snakePositions, state.headX, state.headY);
   renderSnake(isCollision);
   drawApple(ctx, state.appleX, state.appleY, state.tileCount, state.tileSize);
 
@@ -85,14 +74,8 @@ const drawGame = (): void => {
 
 const renderSnake = (isCollision: boolean): void => {
   if (!isCollision)
-    addNewHeadPosition(state.snakePositions, state.headX, state.headY);
+  addNewHeadPosition(state.snakePositions, state.headX, state.headY);
   drawSnake(ctx, state.snakePositions, state.tileCount, state.tileSize);
-  console.log(
-    "nextDirection",
-    state.nextDirection,
-    "direction",
-    state.direction
-  );
   if (!isCollision) {
     let { newHeadX, newHeadY } = updateHeadPosition(
       state.headX,

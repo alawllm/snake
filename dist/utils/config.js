@@ -1,19 +1,6 @@
-export const initialState = {
+export const initialGameState = {
     appleX: 15,
     appleY: 10,
-    direction: "",
-    nextDirection: "",
-    headX: 10,
-    headY: 10,
-    score: 0,
-    snakeLength: 1,
-    snakePositions: [],
-    tileCount: 20,
-    tileSize: 16,
-};
-export const resetState = {
-    appleX: 15,
-    appleY: 18,
     direction: "",
     nextDirection: "",
     headX: 10,

@@ -21,15 +21,10 @@ const headChange = {
     right: { x: 1, y: 0 },
 };
 export const updateHeadPosition = (headX, headY, nextDirection) => {
-    // console.log("type of nextDirection", typeof nextDirection);
-    // console.log("type of nextDirection", nextDirection);
     let tempNextDirection = headChange[nextDirection] || { x: 0, y: 0 };
-    // undefined
-    // console.log("tempNewDirection", tempNextDirection);
     let newHeadX = headX;
     let newHeadY = headY;
     if (nextDirection && nextDirection in headChange) {
-        console.log("handle next direction");
         newHeadX += tempNextDirection.x;
         newHeadY += tempNextDirection.y;
     }

@@ -1,8 +1,7 @@
 import {
   generateRandomPosition,
   generateApplePosition,
-  startNewGame,
-  resetGameState
+  startNewGame
 } from "./game";
 
 //tested: generateRandomPosition, generateApplePosition,

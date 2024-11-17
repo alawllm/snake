@@ -1,22 +1,8 @@
 import { TStateObject, THeadChangeObject } from "./types";
 
-export const initialState: TStateObject = {
+export const initialGameState: TStateObject = {
   appleX: 15,
   appleY: 10,
-  direction: "",
-  nextDirection: "",
-  headX: 10,
-  headY: 10,
-  score: 0,
-  snakeLength: 1,
-  snakePositions: [],
-  tileCount: 20,
-  tileSize: 16,
-};
-
-export const resetState: TStateObject = {
-  appleX: 15,
-  appleY: 18,
   direction: "",
   nextDirection: "",
   headX: 10,

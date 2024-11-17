@@ -48,17 +48,12 @@ export const updateHeadPosition = (
   headY: number,
   nextDirection: any
 ): { newHeadX: number; newHeadY: number } => {
-  // console.log("type of nextDirection", typeof nextDirection);
-  // console.log("type of nextDirection", nextDirection);
   let tempNextDirection = headChange[
     nextDirection as keyof THeadChangeObject
   ] || { x: 0, y: 0 };
-  // undefined
-  // console.log("tempNewDirection", tempNextDirection);
   let newHeadX = headX;
   let newHeadY = headY;
   if (nextDirection && nextDirection in headChange) {
-    console.log("handle next direction");
     newHeadX += tempNextDirection.x;
     newHeadY += tempNextDirection.y;
   } else if (!(nextDirection in headChange)) {
