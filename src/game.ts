@@ -1,4 +1,5 @@
 import { StateObject } from "./types";
+import { TNextDirection } from "./types";
 
 export const generateRandomPosition = (tileCount: number) => {
   const newRandom = Math.floor(Math.random() * tileCount);
@@ -28,6 +29,7 @@ export const newGameListener = (
   drawGame: DrawGame,
   startNewGame: (state: object, drawGame: DrawGame) => void
 ): void => {
+  console.log("hello from new game listener");
   newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 
@@ -49,9 +51,9 @@ export const resetGameState = (): StateObject => {
 
 export const arrowInputHandler = (
   event: KeyboardEvent,
-  direction: string,
-  nextDirection: string
-): string => {
+  direction: TNextDirection,
+  nextDirection: TNextDirection
+): TNextDirection => {
   if (event.key === "ArrowUp" && direction !== "down") {
     nextDirection = "up";
   } else if (event.key === "ArrowDown" && direction !== "up") {
@@ -64,10 +66,9 @@ export const arrowInputHandler = (
   return nextDirection;
 };
 
-export const handleInput = (nextDirection: string, direction: string): void => {
-  //adding arguments to the callback function?
+export const handleInput = (state: StateObject): void => {
+  let { direction, nextDirection } = state;
   document.addEventListener("keydown", (event) => {
-    nextDirection = arrowInputHandler(event, direction, nextDirection);
-    console.log(nextDirection);
+    state.nextDirection = arrowInputHandler(event, direction, nextDirection);
   });
 };

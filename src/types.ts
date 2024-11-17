@@ -1,8 +1,10 @@
+export type TNextDirection = "up" | "down" | "left" | "right" | "" | keyof HeadChangeObject;
+
 export type StateObject = {
   appleX: number;
   appleY: number;
-  direction: string;
-  nextDirection: string | keyof HeadChangeObject;
+  direction: TNextDirection;
+  nextDirection: TNextDirection;
   headX: number;
   headY: number;
   score: number;

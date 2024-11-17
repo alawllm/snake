@@ -53,7 +53,6 @@ const drawGame = (): void => {
   let isCollision: boolean =
     checkSnakeWithBoardCollision(state.headX, state.headY, state.tileCount) ||
     checkSnakeCollision(state.snakePositions, state.headX, state.headY);
-
   renderSnake(isCollision);
   drawApple(ctx, state.appleX, state.appleY, state.tileCount, state.tileSize);
 
@@ -73,7 +72,6 @@ const drawGame = (): void => {
     );
     state.snakeLength = newSnakeLength;
     state.score = newScore;
-    console.log("apple collision!");
   }
   setScoreOnScreen(state.score, scoreContainer);
   //setting direction to next direction, to avoid opposite moves
@@ -87,13 +85,14 @@ const drawGame = (): void => {
 
 const renderSnake = (isCollision: boolean): void => {
   if (!isCollision)
-    addNewHeadPosition(state.snakePositions, state.headX, state.headY);
+  addNewHeadPosition(state.snakePositions, state.headX, state.headY);
   drawSnake(ctx, state.snakePositions, state.tileCount, state.tileSize);
+  console.log('nextDirection', state.nextDirection, 'direction', state.direction)
   if (!isCollision) {
     let { newHeadX, newHeadY } = updateHeadPosition(
-      state.nextDirection,
       state.headX,
-      state.headY
+      state.headY,
+      state.nextDirection
     );
     state.headX = newHeadX;
     state.headY = newHeadY;
@@ -102,7 +101,7 @@ const renderSnake = (isCollision: boolean): void => {
 };
 
 drawGame();
-handleInput(state.nextDirection, state.direction);
+handleInput(state);
 newGameListener(newGameButton, state, drawGame, startNewGame);
 
 /*

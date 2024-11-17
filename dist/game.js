@@ -13,6 +13,7 @@ export const startNewGame = (state, drawGame) => {
     drawGame();
 };
 export const newGameListener = (newGameButton, state, drawGame, startNewGame) => {
+    console.log("hello from new game listener");
     newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 export const resetGameState = () => {
@@ -45,11 +46,10 @@ export const arrowInputHandler = (event, direction, nextDirection) => {
     }
     return nextDirection;
 };
-export const handleInput = (nextDirection, direction) => {
-    //adding arguments to the callback function?
+export const handleInput = (state) => {
+    let { direction, nextDirection } = state;
     document.addEventListener("keydown", (event) => {
-        nextDirection = arrowInputHandler(event, direction, nextDirection);
-        console.log(nextDirection);
+        state.nextDirection = arrowInputHandler(event, direction, nextDirection);
     });
 };
 //# sourceMappingURL=game.js.map

@@ -14,6 +14,7 @@ export const addNewHeadPosition = (
   headX: number,
   headY: number
 ): void => {
+  console.log("add new head positions", snakePositions, headX, headY);
   snakePositions.unshift({ x: headX, y: headY });
 };
 //render?
@@ -35,28 +36,36 @@ export const drawSnake = (
   }
 };
 
+const headChange: HeadChangeObject = {
+  up: { x: 0, y: -1 },
+  down: { x: 0, y: 1 },
+  left: { x: -1, y: 0 },
+  right: { x: 1, y: 0 },
+};
+
 export const updateHeadPosition = (
-  nextDirection: any,
   headX: number,
-  headY: number
+  headY: number,
+  nextDirection: any
 ): { newHeadX: number; newHeadY: number } => {
-  const headChange: HeadChangeObject = {
-    up: { x: 0, y: -1 },
-    down: { x: 0, y: 1 },
-    left: { x: -1, y: 0 },
-    right: { x: 1, y: 0 },
-  };
-  const tempNextDirection = headChange[nextDirection as keyof HeadChangeObject];
+  // console.log("type of nextDirection", typeof nextDirection);
+  // console.log("type of nextDirection", nextDirection);
+  let tempNextDirection = headChange[
+    nextDirection as keyof HeadChangeObject
+  ] || { x: 0, y: 0 };
+  // undefined
+  // console.log("tempNewDirection", tempNextDirection);
   let newHeadX = headX;
   let newHeadY = headY;
-  //making sure that next direction is not undefined as it is at the beginning
-  if (nextDirection in headChange) {
+  if (nextDirection && nextDirection in headChange) {
+    console.log("handle next direction");
     newHeadX += tempNextDirection.x;
     newHeadY += tempNextDirection.y;
+  } else if (!(nextDirection in headChange)) {
+    console.error(`Invalid nextDirection: ${nextDirection}`);
   }
   return { newHeadX, newHeadY };
 };
-
 export const updateSnakeLengthAndScore = (
   snakeLength: number,
   score: number
