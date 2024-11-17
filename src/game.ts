@@ -1,5 +1,5 @@
-import { StateObject } from "./types";
-import { TNextDirection } from "./types";
+import { TStateObject } from "./utils/types";
+import { TNextDirection } from "./utils/types";
 
 export const generateRandomPosition = (tileCount: number) => {
   const newRandom = Math.floor(Math.random() * tileCount);
@@ -33,7 +33,7 @@ export const newGameListener = (
   newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 
-export const resetGameState = (): StateObject => {
+export const resetGameState = (): TStateObject => {
   return {
     appleX: 15,
     appleY: 18,
@@ -66,7 +66,7 @@ export const arrowInputHandler = (
   return nextDirection;
 };
 
-export const handleInput = (state: StateObject): void => {
+export const handleInput = (state: TStateObject): void => {
   let { direction, nextDirection } = state;
   document.addEventListener("keydown", (event) => {
     state.nextDirection = arrowInputHandler(event, direction, nextDirection);

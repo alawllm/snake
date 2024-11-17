@@ -49,7 +49,7 @@ const renderSnake = (isCollision) => {
     if (!isCollision)
         addNewHeadPosition(state.snakePositions, state.headX, state.headY);
     drawSnake(ctx, state.snakePositions, state.tileCount, state.tileSize);
-    console.log('nextDirection', state.nextDirection, 'direction', state.direction);
+    console.log("nextDirection", state.nextDirection, "direction", state.direction);
     if (!isCollision) {
         let { newHeadX, newHeadY } = updateHeadPosition(state.headX, state.headY, state.nextDirection);
         state.headX = newHeadX;

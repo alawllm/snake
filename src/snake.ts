@@ -1,4 +1,4 @@
-import { HeadChangeObject } from "./types";
+import { THeadChangeObject } from "./utils/types";
 
 export const shortenSnake = (
   snakePositions: { x: number; y: number }[],
@@ -36,7 +36,7 @@ export const drawSnake = (
   }
 };
 
-const headChange: HeadChangeObject = {
+const headChange: THeadChangeObject = {
   up: { x: 0, y: -1 },
   down: { x: 0, y: 1 },
   left: { x: -1, y: 0 },
@@ -51,7 +51,7 @@ export const updateHeadPosition = (
   // console.log("type of nextDirection", typeof nextDirection);
   // console.log("type of nextDirection", nextDirection);
   let tempNextDirection = headChange[
-    nextDirection as keyof HeadChangeObject
+    nextDirection as keyof THeadChangeObject
   ] || { x: 0, y: 0 };
   // undefined
   // console.log("tempNewDirection", tempNextDirection);

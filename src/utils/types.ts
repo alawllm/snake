@@ -1,6 +1,6 @@
-export type TNextDirection = "up" | "down" | "left" | "right" | "" | keyof HeadChangeObject;
+export type TNextDirection = "up" | "down" | "left" | "right" | "" | keyof THeadChangeObject;
 
-export type StateObject = {
+export type TStateObject = {
   appleX: number;
   appleY: number;
   direction: TNextDirection;
@@ -14,7 +14,7 @@ export type StateObject = {
   tileSize: number;
 };
 
-export type HeadChangeObject = {
+export type THeadChangeObject = {
   up: { x: number; y: number };
   down: { x: number; y: number };
   left: { x: number; y: number };
