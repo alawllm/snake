@@ -1,16 +1,10 @@
 import {
   generateRandomPosition,
   generateApplePosition,
-  startNewGame
+  startNewGame,
 } from "./game";
 
-//tested: generateRandomPosition, generateApplePosition,
-
-// export const startNewGame = (state: object, drawGame: DrawGame) => {
-//   console.log("start new game!");
-//   state = resetGameState();
-//   drawGame();
-// };
+import { TStateObject } from "./utils/types";
 
 describe("game works", () => {
   test("generates random position", () => {
@@ -28,8 +22,8 @@ describe("game works", () => {
     expect(newAppleY).toBeGreaterThanOrEqual(0);
   });
 
-  test("starts new game", async() => {
-    const initialState: object = {
+  test("starts new game", async () => {
+    const initialState: TStateObject = {
       appleX: 15,
       appleY: 10,
       direction: "",

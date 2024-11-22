@@ -14,7 +14,6 @@ export const addNewHeadPosition = (
   headX: number,
   headY: number
 ): void => {
-  console.log("add new head positions", snakePositions, headX, headY);
   snakePositions.unshift({ x: headX, y: headY });
 };
 //render?

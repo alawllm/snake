@@ -8,7 +8,6 @@ export const checkSnakeCollision = (
   );
   //object is a reference - check if these values are in the array
   if (collisionWithBody) {
-    console.log("collision with body!");
     return true;
   }
   return false;
@@ -20,7 +19,6 @@ export const checkSnakeWithBoardCollision = (
   tileCount: number
 ): boolean => {
   if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
-    console.log("collision with board!");
     return true;
   }
   return false;

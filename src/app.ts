@@ -8,7 +8,7 @@ import {
 import {
   newGameListener,
   generateApplePosition,
-  resetGameState,
+  startNewGame,
   handleInput,
 } from "./game.js";
 
@@ -86,12 +86,6 @@ const renderSnake = (isCollision: boolean): void => {
     state.headY = newHeadY;
     shortenSnake(state.snakePositions, state.snakeLength);
   }
-};
-
-const startNewGame = (state: TStateObject, drawGame: () => void) => {
-  console.log("start new game!");
-  Object.assign(state, resetGameState());
-  drawGame();
 };
 
 drawGame();

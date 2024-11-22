@@ -1,5 +1,5 @@
 import { drawGameOver, renderGameScreen, drawApple, setScoreOnScreen, } from "./render.js";
-import { newGameListener, generateApplePosition, resetGameState, handleInput, } from "./game.js";
+import { newGameListener, generateApplePosition, startNewGame, handleInput, } from "./game.js";
 import { shortenSnake, addNewHeadPosition, drawSnake, updateHeadPosition, updateSnakeLengthAndScore, } from "./snake.js";
 import { checkSnakeCollision, checkSnakeWithBoardCollision, checkAppleCollision, } from "./collision.js";
 import { initialGameState } from "./utils/config.js";
@@ -26,7 +26,11 @@ const drawGame = () => {
     }
     setScoreOnScreen(state.score, scoreContainer);
     //setting direction to next direction, to avoid opposite moves
+    console.log("direction", state.direction);
+    console.log("nextDirection", state.nextDirection);
     state.direction = state.nextDirection;
+    console.log("direction2", state.direction);
+    console.log("nextDirection2", state.nextDirection);
     if (!isCollision) {
         setTimeout(drawGame, 1000 / (state.score / 2 + 3.3));
     }
@@ -44,11 +48,6 @@ const renderSnake = (isCollision) => {
         state.headY = newHeadY;
         shortenSnake(state.snakePositions, state.snakeLength);
     }
-};
-const startNewGame = (state, drawGame) => {
-    console.log("start new game!");
-    Object.assign(state, resetGameState());
-    drawGame();
 };
 drawGame();
 handleInput(state);

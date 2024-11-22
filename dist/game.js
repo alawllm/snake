@@ -27,6 +27,7 @@ export const newGameListener = (newGameButton, state, drawGame, startNewGame) =>
     newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 export const arrowInputHandler = (event, direction, nextDirection) => {
+    console.log("directionArrowInputHandler", direction);
     if (event.key === "ArrowUp" && direction !== "down") {
         nextDirection = "up";
     }
@@ -42,9 +43,13 @@ export const arrowInputHandler = (event, direction, nextDirection) => {
     return nextDirection;
 };
 export const handleInput = (state) => {
-    let { direction, nextDirection } = state;
     document.addEventListener("keydown", (event) => {
-        state.nextDirection = arrowInputHandler(event, direction, nextDirection);
+        state.nextDirection = arrowInputHandler(event, state.direction, state.nextDirection);
     });
+};
+export const startNewGame = (state, drawGame) => {
+    console.log("start new game!");
+    Object.assign(state, resetGameState());
+    drawGame();
 };
 //# sourceMappingURL=game.js.map

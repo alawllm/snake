@@ -29,14 +29,13 @@ export const resetGameState = (): TStateObject => {
     tileCount: 20,
     tileSize: 16,
   };
-}; 
+};
 export const newGameListener = (
   newGameButton: HTMLButtonElement,
   state: TStateObject,
   drawGame: () => void,
   startNewGame: (state: TStateObject, drawGame: () => void) => void
 ): void => {
-  console.log("hello from new game listener");
   newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 
@@ -58,8 +57,16 @@ export const arrowInputHandler = (
 };
 
 export const handleInput = (state: TStateObject): void => {
-  let { direction, nextDirection } = state;
   document.addEventListener("keydown", (event) => {
-    state.nextDirection = arrowInputHandler(event, direction, nextDirection);
+    state.nextDirection = arrowInputHandler(
+      event,
+      state.direction,
+      state.nextDirection
+    );
   });
+};
+
+export const startNewGame = (state: TStateObject, drawGame: () => void) => {
+  Object.assign(state, resetGameState());
+  drawGame();
 };
