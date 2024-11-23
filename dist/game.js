@@ -23,11 +23,9 @@ export const resetGameState = () => {
     };
 };
 export const newGameListener = (newGameButton, state, drawGame, startNewGame) => {
-    console.log("hello from new game listener");
     newGameButton.addEventListener("click", () => startNewGame(state, drawGame));
 };
 export const arrowInputHandler = (event, direction, nextDirection) => {
-    console.log("directionArrowInputHandler", direction);
     if (event.key === "ArrowUp" && direction !== "down") {
         nextDirection = "up";
     }
@@ -48,7 +46,6 @@ export const handleInput = (state) => {
     });
 };
 export const startNewGame = (state, drawGame) => {
-    console.log("start new game!");
     Object.assign(state, resetGameState());
     drawGame();
 };

@@ -55,8 +55,6 @@ export const updateHeadPosition = (
   if (nextDirection && nextDirection in headChange) {
     newHeadX += tempNextDirection.x;
     newHeadY += tempNextDirection.y;
-  } else if (!(nextDirection in headChange)) {
-    console.error(`Invalid nextDirection: ${nextDirection}`);
   }
   return { newHeadX, newHeadY };
 };

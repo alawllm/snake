@@ -26,11 +26,7 @@ const drawGame = () => {
     }
     setScoreOnScreen(state.score, scoreContainer);
     //setting direction to next direction, to avoid opposite moves
-    console.log("direction", state.direction);
-    console.log("nextDirection", state.nextDirection);
     state.direction = state.nextDirection;
-    console.log("direction2", state.direction);
-    console.log("nextDirection2", state.nextDirection);
     if (!isCollision) {
         setTimeout(drawGame, 1000 / (state.score / 2 + 3.3));
     }

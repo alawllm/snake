@@ -10,7 +10,7 @@ export const drawGameOver = (
   canvas: HTMLCanvasElement
 ): void => {
   ctx.fillStyle = "white";
-  ctx.font = "60px handjet";
+  ctx.font = "55px handjet";
   ctx.fillText("Game Over!", canvas.clientWidth / 7, canvas.clientHeight / 2);
 };
 export const drawApple = (

@@ -4,7 +4,6 @@ export const shortenSnake = (snakePositions, snakeLength) => {
     }
 };
 export const addNewHeadPosition = (snakePositions, headX, headY) => {
-    console.log("add new head positions", snakePositions, headX, headY);
     snakePositions.unshift({ x: headX, y: headY });
 };
 //render?
@@ -27,9 +26,6 @@ export const updateHeadPosition = (headX, headY, nextDirection) => {
     if (nextDirection && nextDirection in headChange) {
         newHeadX += tempNextDirection.x;
         newHeadY += tempNextDirection.y;
-    }
-    else if (!(nextDirection in headChange)) {
-        console.error(`Invalid nextDirection: ${nextDirection}`);
     }
     return { newHeadX, newHeadY };
 };

@@ -4,7 +4,7 @@ export const renderGameScreen = (ctx, canvas) => {
 };
 export const drawGameOver = (ctx, canvas) => {
     ctx.fillStyle = "white";
-    ctx.font = "60px handjet";
+    ctx.font = "55px handjet";
     ctx.fillText("Game Over!", canvas.clientWidth / 7, canvas.clientHeight / 2);
 };
 export const drawApple = (ctx, appleX, appleY, tileCount, tileSize) => {
