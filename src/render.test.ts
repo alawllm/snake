@@ -26,14 +26,14 @@ describe("draw", () => {
   });
 
   test("draws game over", () => {
+    const text = "Game Over!";
+    const textWidth = ctx.measureText(text).width;
+    const x = (canvas.width - textWidth) / 2;
+    const y = canvas.height / 2 + 20;
     drawGameOver(ctx, canvas);
     expect(ctx.fillStyle).toBe("#ffffff");
-    expect(ctx.font).toBe("55px handjet");
-    expect(ctx.fillText).toHaveBeenCalledWith(
-      "Game Over!",
-      canvas.clientWidth / 6.5,
-      canvas.clientHeight / 2
-    );
+    expect(ctx.font).toBe("60px handjet");
+    expect(ctx.fillText).toHaveBeenCalledWith("Game Over!", x, y);
   });
   test("draws apple", () => {
     let tileCount = 10;

@@ -7,20 +7,22 @@ body {
   justify-content: center;
   align-items: center;
   font-family: "Handjet", sans-serif;
+  background-color: #008080
 }
 canvas {
-  margin: 1rem;
-  border: 7px solid rgb(69, 220, 179);
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  border: 7px solid #fdffff;
 }
 .main-header {
-  color: darkblue;
-  font-size: 3.5rem;
+  color: #fdffff;
+  font-size: 5rem;
   font-weight: 600;
-  margin: 0.8rem;
+  margin: 0.5rem;
 }
 
 #score-container {
-  color: red;
+  color: #fdffff;
   font-weight: 400;
   font-size: 2.5rem;
   text-align: left;
