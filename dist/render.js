@@ -3,7 +3,7 @@ export const renderGameScreen = (ctx, canvas) => {
     ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 };
 export const drawGameOver = (ctx, canvas) => {
-    ctx.font = "55px handjet";
+    ctx.font = "60px handjet";
     const text = "Game Over!";
     const textWidth = ctx.measureText(text).width;
     const x = (canvas.width - textWidth) / 2;

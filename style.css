@@ -33,17 +33,26 @@ canvas {
   font-size: 1.5rem;
   text-decoration: none;
   border: none;
-  background-color: rgb(56, 164, 85);
-  padding: 0.5rem;
+  background-color: white;
+  padding: 0.6em;
   border-radius: 10px;
   margin: 0.5rem;
-  color: rgb(53, 50, 50);
+  color: blue;
 }
 
 #new-button:hover {
-  background-color: rgb(119, 227, 173);
+  background-color: rgb(219, 236, 229);
 }
 
 footer {
   margin-top: 1rem;
+  font-size: 1rem;
+  color: white;
+}
+
+footer a{
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: white;
+  font-style: none;
 }
